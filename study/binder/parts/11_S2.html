@@ -1,0 +1,129 @@
+<section class="tab" id="S2" data-short="2 · Data Representation">
+<div class="tabhead">2 · Data representation <span class="sm">(S1–S3, Null Ch. 2 &amp; 5, Study Guide §4)</span></div>
+<p class="links">Cheat sheet: <span class="cs">T1</span> <span class="cs">T2</span> <span class="cs">T12</span> · Used in: Q1, Q2, P1, P2, P10</p>
+
+<h3 id="s2-hex">Binary and hexadecimal</h3>
+<div class="row"><div class="col">
+<p>A computer stores everything as <b>bits</b> (0/1). Numbers use positional notation: each position is worth a power of the base.</p>
+<div class="formula">
+<b>Unsigned value</b> = Σ bit × 2^position (position 0 is the rightmost)<br/>
+n bits give <b>2ⁿ</b> patterns → unsigned range <b>0 … 2ⁿ − 1</b><br/>
+8 bits: 0…255 · 12 bits: 0…4095 · 16 bits: 0…65,535
+</div>
+<p><b>Hexadecimal</b> (base 16, digits 0–9, A–F) is shorthand for binary: <b>1 hex digit = 4 bits</b>, so 1 byte (8 bits) = 2 hex digits and a 16-bit MARIE word = 4 hex digits.</p>
+</div><div class="col">
+<table class="mono">
+<tr><th>Hex</th><th>Bin</th><th>Dec</th><th>Hex</th><th>Bin</th><th>Dec</th></tr>
+<tr><td>0</td><td>0000</td><td>0</td><td>8</td><td>1000</td><td>8</td></tr>
+<tr><td>1</td><td>0001</td><td>1</td><td>9</td><td>1001</td><td>9</td></tr>
+<tr><td>2</td><td>0010</td><td>2</td><td>A</td><td>1010</td><td>10</td></tr>
+<tr><td>3</td><td>0011</td><td>3</td><td>B</td><td>1011</td><td>11</td></tr>
+<tr><td>4</td><td>0100</td><td>4</td><td>C</td><td>1100</td><td>12</td></tr>
+<tr><td>5</td><td>0101</td><td>5</td><td>D</td><td>1101</td><td>13</td></tr>
+<tr><td>6</td><td>0110</td><td>6</td><td>E</td><td>1110</td><td>14</td></tr>
+<tr><td>7</td><td>0111</td><td>7</td><td>F</td><td>1111</td><td>15</td></tr>
+</table>
+</div></div>
+<div class="method">▣ <b>METHOD</b> Hex → binary: replace each digit by its 4 bits. Binary → hex: group 4 bits from the right, replace each group. Conversions to/from decimal: Tab C (<a class="pg" href="#c-conv"></a>).</div>
+
+<h3 id="s2-bytes">Bytes, MSB and LSB</h3>
+<div class="row"><div class="col">
+<p>A 32-bit value has 4 bytes. Written in hex, each byte is one pair of digits:</p>
+<table class="mono">
+<tr><th>0x778899AA</th><td>77</td><td>88</td><td>99</td><td>AA</td></tr>
+<tr><th>role</th><td>MSB</td><td></td><td></td><td>LSB</td></tr>
+</table>
+<p>The <b>most significant byte</b> (MSB) is the leftmost pair; the <b>least significant byte</b> (LSB) is the rightmost pair. The <b>most significant bit</b> is the single leftmost bit.</p>
+</div><div class="col">
+<div class="ex"><p class="et">Example: middle bytes <span class="src">quiz Q1, prof's solution</span></p>
+0x778899AA → drop the highest byte (77) and lowest byte (AA) → middle bytes 88 and 99.<br/>
+16-bit code: <b>8899</b>. Binary: 8 = 1000, 8 = 1000, 9 = 1001, 9 = 1001<br/>
+<span class="ans">0x8899 = 1000 1000 1001 1001</span></div>
+<div class="ex"><p class="et">Example: MSB then LSB <span class="src">cheat sheet P1</span></p>
+0xC0FFEE42 → MSB C0, LSB 42 → <span class="ans">0xC042 = 1100 0000 0100 0010</span></div>
+</div></div>
+<div class="trap">⚠ <b>TRAP</b> "MSB" can mean most significant <b>byte</b> (Q1: "ignoring the most significant byte") or <b>bit</b> (Q2: "the MSB, the leftmost bit"). Read which one the question says.</div>
+
+<h3 id="s2-tc">Two's complement: negative integers</h3>
+<div class="row"><div class="col">
+<div class="formula">
+In n-bit <b>two's complement</b>, the leftmost bit has weight <b>−2ⁿ⁻¹</b> instead of +2ⁿ⁻¹.<br/>
+Range: <b>−2ⁿ⁻¹ … 2ⁿ⁻¹ − 1</b><br/>
+8-bit: −128 … 127 · 16-bit: −32,768 … 32,767<br/>
+<b>Sign check</b>: MSB (leftmost bit) 0 → non-negative, 1 → negative.<br/>
+In hex: first digit 0–7 → positive, 8–F → negative.
+</div>
+<p>Why use it? The same adder circuit works for positive and negative numbers, and there is only one zero.</p>
+</div><div class="col">
+<div class="method">▣ <b>METHOD: write −x</b><br/>1. Write +x in n bits. 2. Flip every bit. 3. Add 1.<br/><br/>
+<b>METHOD: decode a negative pattern</b><br/>Value = (unsigned value) − 2ⁿ.<br/>Or: flip the bits, add 1, read the magnitude, put a minus sign.</div>
+</div></div>
+<div class="row"><div class="col">
+<div class="ex"><p class="et">Example: −10 in 8 bits <span class="src">Study Guide p.3</span></p>
++10 = 0000 1010 → flip → 1111 0101 → +1 → <span class="ans">1111 0110</span> (= 0xF6)<br/>
+Check: 0xF6 = 246 unsigned; 246 − 256 = −10 ✓</div>
+<div class="ex"><p class="et">Example: −37 in 8 bits <span class="src">cheat sheet P2b</span></p>
++37 = 0010 0101 → 1101 1010 → +1 → <span class="ans">1101 1011 = 0xDB</span></div>
+</div><div class="col">
+<div class="ex"><p class="et">Example: decode 0xF3A0 (16-bit) <span class="src">cheat sheet P2a</span></p>
+First digit F ≥ 8 → negative. Unsigned = 15·4096 + 3·256 + 10·16 = 62,368.<br/>
+Value = 62,368 − 65,536 = <span class="ans">−3168</span></div>
+<div class="ex"><p class="et">Example: decode 0xFFD6 (16-bit)</p>
+Unsigned 65,494 → 65,494 − 65,536 = <span class="ans">−42</span>. (Flip: 0000 0000 0010 1001, +1 → 0010 1010 = 42 ✓)</div>
+</div></div>
+<div class="row"><div class="col">
+<p><b>Sign extension</b>: to widen a two's-complement number, copy the sign bit to the left. −5 = 1111 1011 (8-bit) → 1111 1111 1111 1011 (16-bit).</p>
+</div><div class="col">
+<p><b>Overflow</b>: adding two positives that gives a "negative" (or two negatives giving a positive) means the result did not fit. 8-bit: 100 + 50 = 150 > 127 → the bits read as −106.</p>
+</div></div>
+
+<h3 id="s2-char">Characters: the same bits, different meanings</h3>
+<div class="row"><div class="col">
+<p>Characters are stored as numeric codes. <b>ASCII</b> uses 7 bits, stored in one 8-bit byte: 'A' = 0x41, 'M' = 0x4D, 'E' = 0x45, 'a' = 0x61, '0' = 0x30 (table <a class="pg" href="#t-ascii"></a>).</p>
+<p>A bit pattern has no meaning by itself. 0x4D45 can be the text "ME", the integer 19,781, or a MARIE instruction (4 = Subt, address D45). The interpretation depends on what the program does with it.</p>
+</div><div class="col">
+<div class="ex"><p class="et">Example: packed characters <span class="src">quiz Q2, prof's solution</span></p>
+"ME" stored as 0x4D45 (one character per byte).<br/>
+Binary: 4 = 0100, D = 1101, 4 = 0100, 5 = 0101 → <b>0100 1101 0100 0101</b><br/>
+Read as two's complement: the MSB (leftmost bit) is <b>0</b> → <span class="ans">positive</span> (+19,781).</div>
+</div></div>
+
+<h3 id="s2-endian">Endianness: byte order in memory <span class="id">(urutan byte)</span></h3>
+<div class="row"><div class="col">
+<div class="formula">
+In a byte-addressable memory, a multi-byte value occupies several consecutive addresses. <b>Endianness</b> is the order its bytes go in.<br/>
+<b>Big endian</b>: the <b>most</b> significant byte at the <b>lowest</b> address ("big end first").<br/>
+<b>Little endian</b>: the <b>least</b> significant byte at the <b>lowest</b> address.<br/>
+Only the byte order changes; the bits inside each byte are untouched.
+</div>
+<div class="method">▣ <b>METHOD</b><br/>1. Pad the value to its full width (32-bit = 8 hex digits).<br/>2. Split into bytes (pairs of hex digits).<br/>3. Big: write them left to right from the start address. Little: write them in reverse.<br/>Reading memory back: undo the steps.</div>
+</div><div class="col">
+<table class="mono">
+<tr><th>Value, start addr</th><th></th><th>+0</th><th>+1</th><th>+2</th><th>+3</th></tr>
+<tr><td rowspan="2">0x12345678</td><td>Big</td><td>12</td><td>34</td><td>56</td><td>78</td></tr>
+<tr><td>Little</td><td>78</td><td>56</td><td>34</td><td>12</td></tr>
+<tr><td rowspan="2">0x1234 (32-bit)</td><td>Big</td><td>00</td><td>00</td><td>12</td><td>34</td></tr>
+<tr><td>Little</td><td>34</td><td>12</td><td>00</td><td>00</td></tr>
+<tr><td rowspan="2">0xDEADBEEF</td><td>Big</td><td>DE</td><td>AD</td><td>BE</td><td>EF</td></tr>
+<tr><td>Little</td><td>EF</td><td>BE</td><td>AD</td><td>DE</td></tr>
+<tr><td rowspan="2">−2 (32-bit)<br/>= 0xFFFFFFFE</td><td>Big</td><td>FF</td><td>FF</td><td>FF</td><td>FE</td></tr>
+<tr><td>Little</td><td>FE</td><td>FF</td><td>FF</td><td>FF</td></tr>
+</table>
+<div class="ex"><p class="et">Example: reading memory back <span class="src">cheat sheet P10b</span></p>
+Little-endian memory holds 78 56 34 12 at addresses 0–3. The lowest address holds the LSB, so reverse: <span class="ans">0x12345678</span></div>
+</div></div>
+<div class="row"><div class="col">
+<table>
+<tr><th></th><th>Big endian</th><th>Little endian</th></tr>
+<tr><td>Used by</td><td>Most UNIX machines, newer RISC (MIPS), network byte order</td><td>Intel x86 PCs</td></tr>
+<tr><td>Advantages</td><td>Reads naturally in a memory dump; sign is in the first byte; strings and integers stored in the same order</td><td>Easier multi-byte arithmetic (start from the low byte); a value can be read at a smaller width from the same address</td></tr>
+</table>
+</div><div class="col">
+<p><b>Bi-endian</b> machines can do either: MIPS (S6-7 #19) and ARM. Byte order matters whenever data moves between machines or into files: both sides must agree.</p>
+<div class="trap">⚠ <b>TRAP</b> The S4-5 #16 table says Intel is big endian. That is wrong: Intel is <b>little endian</b> (the S4-5 #6 and #15 text slides say so too). See Tab X.</div>
+</div></div>
+
+<div class="check"><p class="ct">Check yourself</p>
+1. 0x3C7 in binary? · 2. Is 0x9ABC positive or negative in 16-bit two's complement? · 3. −1 in 16 bits (hex)? · 4. 8-bit two's complement range? · 5. Store 0x0A0B0C0D little endian at address 100: what is at 101?<br/>
+<span class="small">Answers: 0011 1100 0111 · negative (9 ≥ 8) · 0xFFFF · −128 … 127 · 0C (order 0D 0C 0B 0A)</span></div>
+</section>

@@ -1,0 +1,73 @@
+<section class="tab" id="S6" data-short="6 · Performance &amp; Pipelining">
+<div class="tabhead">6 · Performance and pipelining <span class="sm">(S2–S5, Null Ch. 5, Study Guide §7)</span></div>
+<p class="links">Cheat sheet: <span class="cs">T3</span> <span class="cs">T8</span> · Used in: Q7, P7, P13</p>
+
+<h3 id="s6-cpu">The CPU performance equation</h3>
+<div class="row"><div class="col">
+<div class="formula">
+<b>CPU cycles = IC × CPI</b><br/>
+<b>CPU time = IC × CPI × T = (IC × CPI) ÷ f</b><br/>
+CPI = (CPU time × f) ÷ IC<br/>
+Performance ∝ 1 ÷ execution time<br/>
+<b>Speedup = old time ÷ new time</b> (&gt; 1 means the new one is faster)<br/>
+IC = instruction count, CPI = average cycles per instruction, f = clock rate, T = 1/f
+</div>
+<p>A faster clock alone does not guarantee a faster program: instruction count, CPI, memory behaviour and the program itself all matter.</p>
+</div><div class="col">
+<div class="ex"><p class="et">Example <span class="src">cheat sheet P13</span></p>
+4 × 10⁸ instructions. Old: CPI 2.5 at 2 GHz. New: CPI 3 at 2.5 GHz.<br/>
+Old = 4×10⁸ × 2.5 ÷ 2×10⁹ = <span class="ans">0.5 s</span><br/>
+New = 4×10⁸ × 3 ÷ 2.5×10⁹ = <span class="ans">0.48 s</span><br/>
+Speedup = 0.5 ÷ 0.48 = <span class="ans">1.042</span>: the new CPU wins despite its worse CPI.</div>
+<div class="ex"><p class="et">Example: a faster clock that doesn't help</p>
+2 × 10⁹ instructions. A: CPI 1.5 at 3 GHz → 3×10⁹ ÷ 3×10⁹ = 1.0 s. B: CPI 1.2 at 2.4 GHz → 2.4×10⁹ ÷ 2.4×10⁹ = 1.0 s. Same time: B's better CPI cancels A's faster clock.</div>
+</div></div>
+
+<h3 id="s6-pipe">Instruction pipelining</h3>
+<div class="row"><div class="col">
+<p>Pipelining <b>overlaps</b> the stages of the fetch–decode–execute cycle, like an assembly line: while instruction 1 is in stage 2, instruction 2 is in stage 1. It increases <b>throughput</b> (instructions finished per second); it does <b>not</b> make one instruction finish faster.</p>
+<table class="mono">
+<tr><th>Cycle</th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td></tr>
+<tr><th>Instr 1</th><td>S1</td><td>S2</td><td>S3</td><td>S4</td><td>S5</td><td>S6</td><td></td><td></td><td></td></tr>
+<tr><th>Instr 2</th><td></td><td>S1</td><td>S2</td><td>S3</td><td>S4</td><td>S5</td><td>S6</td><td></td><td></td></tr>
+<tr><th>Instr 3</th><td></td><td></td><td>S1</td><td>S2</td><td>S3</td><td>S4</td><td>S5</td><td>S6</td><td></td></tr>
+<tr><th>Instr 4</th><td></td><td></td><td></td><td>S1</td><td>S2</td><td>S3</td><td>S4</td><td>S5</td><td>S6</td></tr>
+</table>
+<p class="small">6 stages, 4 instructions: 6 + 4 − 1 = 9 cycles (slide S4-5 #14). Without pipelining: 6 × 4 = 24 cycles.</p>
+</div><div class="col">
+<div class="formula">
+k = stages, n = instructions (tasks), τ = pipeline clock cycle, t<sub>n</sub> = time for one instruction without pipelining (= k·τ if the stages are equal)<br/>
+<b>Pipelined time = (k + n − 1) × τ</b><br/>
+<b>Non-pipelined time = n × t<sub>n</sub></b><br/>
+<b>Speedup S = n·t<sub>n</sub> ÷ ((k + n − 1)·τ)</b><br/>
+Equal stages: S = n·k ÷ (k + n − 1) → approaches <b>k</b> as n grows.<br/>
+With s stall cycles: (k + n − 1 + s) × τ
+</div>
+<div class="tip">✔ Why k + n − 1? The first instruction needs k cycles to go through every stage ("filling the pipe"). After that, one instruction finishes every cycle: n − 1 more.</div>
+</div></div>
+<div class="row"><div class="col">
+<div class="ex"><p class="et">Worked example <span class="src">quiz Q7, prof's solution</span></p>
+Given: k = 5, τ = 40 ns, n = 800, t<sub>n</sub> = k × τ = 200 ns.<br/>
+<b>Step 1</b> Non-pipelined = n × t<sub>n</sub> = 800 × 200 = 160,000 ns<br/>
+<b>Step 2</b> Pipelined = (k + n − 1) × τ = (5 + 800 − 1) × 40 = 804 × 40 = 32,160 ns<br/>
+<b>Step 3</b> S = 160,000 ÷ 32,160 ≈ <span class="ans">4.975</span> (close to the maximum 5)</div>
+</div><div class="col">
+<div class="ex"><p class="et">Example <span class="src">S4-5 exercise 5</span></p>
+Non-pipelined task 200 ns; 5 segments of 40 ns; 200 tasks.<br/>
+200 × 200 = 40,000 ns vs (5 + 199) × 40 = 8,160 ns → S = <span class="ans">4.90</span></div>
+<div class="ex"><p class="et">Example with stalls <span class="src">cheat sheet P7</span></p>
+k = 4, τ = 25 ns, n = 100, t<sub>n</sub> = 100 ns. S = 10,000 ÷ (103 × 25) = 3.883. With 6 stalls: 10,000 ÷ (109 × 25) = 3.670.</div>
+</div></div>
+
+<h3 id="s6-haz">Pipeline hazards</h3>
+<table>
+<tr><th>Hazard</th><th>What happens</th><th>Example</th><th>Fix</th></tr>
+<tr><td><b>Structural</b> (resource conflict)</td><td>two instructions need the same hardware in the same cycle</td><td>one instruction fetches while another reads data from a single-ported memory</td><td>stall, or add hardware (separate instruction/data caches)</td></tr>
+<tr><td><b>Data</b> (dependency)</td><td>an instruction needs a result that isn't ready yet</td><td>ADD R1, R2, R3 then SUB R4, <b>R1</b>, R5</td><td>stall, or forwarding/bypassing the result</td></tr>
+<tr><td><b>Control</b> (branch)</td><td>the next instruction depends on a branch not yet decided</td><td>after a conditional branch, which instruction to fetch?</td><td>stall, flush, branch prediction</td></tr>
+</table>
+
+<div class="check"><p class="ct">Check yourself</p>
+1. 6-stage pipeline, 15 ns cycle, 500 instructions, t<sub>n</sub> = 90 ns: speedup? · 2. Maximum possible speedup of that pipeline? · 3. Which hazard does forwarding fix? · 4. 10⁹ instructions, CPI 2, 4 GHz: CPU time?<br/>
+<span class="small">Answers: 45,000 ÷ (505 × 15) = 45,000 ÷ 7,575 = 5.94 · 6 · data hazards · 0.5 s</span></div>
+</section>

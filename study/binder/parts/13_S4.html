@@ -1,0 +1,203 @@
+<section class="tab" id="S4" data-short="4 · MARIE">
+<div class="tabhead">4 · MARIE: a simple computer <span class="sm">(Sessions 2–3, Null Ch. 4)</span></div>
+<p class="links">Cheat sheet: <span class="cs">T4</span> <span class="cs">T5</span> <span class="cs">T6</span> · Used in: Q4, Q5, P4, P5</p>
+<p><b>MARIE</b> = <i>Machine Architecture that is Really Intuitive and Easy</i>. It is a teaching computer small enough to trace by hand. If you understand MARIE, you understand how every CPU runs a program.</p>
+
+<h3 id="s4-regs">Architecture and registers</h3>
+<div class="row"><div class="col">
+<div class="formula">
+• Stored-program, fixed word length, <b>word-addressable</b>, accumulator-based.<br/>
+• <b>4K words</b> of memory = 2¹² → <b>12-bit addresses</b> (000 … FFF hex).<br/>
+• <b>16-bit</b> data words and <b>16-bit</b> instructions.<br/>
+• Two's-complement integers.<br/>
+• Seven registers (table).
+</div>
+<div class="ex"><p class="et">Why is MAR 12 bits but AC 16 bits? <span class="src">S2-3 exercise 3</span></p>
+MAR holds an <b>address</b>. There are 2¹² locations, so 12 bits are enough to name any of them. AC holds <b>data</b>: a full 16-bit memory word. Addresses and data have different sizes, so their registers do too. (PC also holds an address → 12 bits; MBR and IR hold whole words → 16 bits.)</div>
+</div><div class="col">
+<table>
+<tr><th>Reg</th><th>Bits</th><th>Holds</th></tr>
+<tr><td><b>AC</b></td><td>16</td><td>Accumulator: data values and arithmetic results</td></tr>
+<tr><td><b>MAR</b></td><td>12</td><td>Memory Address Register: the address to read/write</td></tr>
+<tr><td><b>MBR</b></td><td>16</td><td>Memory Buffer Register: data just read from, or about to be written to, memory</td></tr>
+<tr><td><b>PC</b></td><td>12</td><td>Program Counter: address of the <b>next</b> instruction</td></tr>
+<tr><td><b>IR</b></td><td>16</td><td>Instruction Register: the instruction now being executed</td></tr>
+<tr><td><b>InREG</b></td><td>8</td><td>Input from the keyboard</td></tr>
+<tr><td><b>OutREG</b></td><td>8</td><td>Output to the display</td></tr>
+</table>
+<div class="tip">✔ The CPU never touches memory directly. Every read goes memory → MBR, and every write goes MBR → memory, at the address in MAR.</div>
+</div></div>
+
+<h3 id="s4-isa">Instruction format and instruction set</h3>
+<div class="row"><div class="col">
+<table class="mono">
+<tr><th>bits</th><td>15 14 13 12</td><td>11 … 0</td></tr>
+<tr><th>field</th><td>opcode (4 bits)</td><td>address (12 bits)</td></tr>
+<tr><th>hex</th><td>1 digit</td><td>3 digits</td></tr>
+</table>
+<p>Written in hex, a MARIE instruction is <b>opcode digit + 3-digit address</b>. 4 opcode bits allow 16 instructions; the slides use opcodes 1–9.</p>
+<div class="ex"><p class="et">Example: decoding <span class="src">Study Guide p.6</span></p>
+130C → opcode 1, address 30C → <b>Load 30C</b><br/>
+2450 → <b>Store 450</b> · 33A1 → <b>Add 3A1</b><br/>
+4155 → <b>Subt 155</b> (quiz Q4) · 320A → <b>Add 20A</b> (P4)</div>
+</div><div class="col">
+<table>
+<tr><th>Op</th><th>Instruction</th><th>Meaning</th></tr>
+<tr><td>1</td><td>Load X</td><td>AC ← M[X]</td></tr>
+<tr><td>2</td><td>Store X</td><td>M[X] ← AC</td></tr>
+<tr><td>3</td><td>Add X</td><td>AC ← AC + M[X]</td></tr>
+<tr><td>4</td><td>Subt X</td><td>AC ← AC − M[X]</td></tr>
+<tr><td>5</td><td>Input</td><td>AC ← value from the keyboard</td></tr>
+<tr><td>6</td><td>Output</td><td>display the value in AC</td></tr>
+<tr><td>7</td><td>Halt</td><td>stop the program</td></tr>
+<tr><td>8</td><td>Skipcond</td><td>skip the next instruction if the condition holds</td></tr>
+<tr><td>9</td><td>Jump X</td><td>PC ← X (continue at X)</td></tr>
+</table>
+</div></div>
+<div class="trap">⚠ <b>TRAP</b> X is an <b>address</b>; M[X] is the <b>value stored there</b>. "Add 107" adds the contents of address 107, not the number 107.</div>
+
+<h3 id="s4-rtn">Register Transfer Notation (RTN)</h3>
+<div class="row"><div class="col">
+<p>One instruction is really several tiny steps (<b>micro-operations</b>). RTN writes each as "destination ← source".</p>
+<table>
+<tr><th>Instr</th><th>RTN</th><th>ALU?</th></tr>
+<tr><td>Load X</td><td>MAR ← X · MBR ← M[MAR] · AC ← MBR</td><td>no</td></tr>
+<tr><td>Store X</td><td>MAR ← X · MBR ← AC · M[MAR] ← MBR</td><td>no</td></tr>
+<tr><td>Add X</td><td>MAR ← X · MBR ← M[MAR] · AC ← AC + MBR</td><td>yes</td></tr>
+<tr><td>Subt X</td><td>MAR ← X · MBR ← M[MAR] · AC ← AC − MBR</td><td>yes</td></tr>
+<tr><td>Input</td><td>AC ← InREG</td><td>no</td></tr>
+<tr><td>Output</td><td>OutREG ← AC</td><td>no</td></tr>
+<tr><td>Jump X</td><td>PC ← X</td><td>no</td></tr>
+</table>
+</div><div class="col">
+<div class="method">▣ <b>METHOD</b> For any instruction ask three questions (Study Guide p.5):<br/>1. Where does the <b>address</b> go? → MAR.<br/>2. Where does the <b>data</b> go? → through MBR, to/from AC.<br/>3. Is the <b>ALU</b> needed? → only for Add and Subt.</div>
+<p>Load: the data flows X → MAR → M[MAR] → MBR → AC (the slide's flow diagram). Store runs the opposite way: AC → MBR → M[MAR].</p>
+</div></div>
+
+<h3 id="s4-fde">The fetch–decode–execute cycle</h3>
+<div class="row"><div class="col">
+<table>
+<tr><th>Stage</th><th>RTN</th><th>In words</th></tr>
+<tr><td rowspan="4"><b>Fetch</b></td><td>MAR ← PC</td><td>put the next instruction's address on the bus</td></tr>
+<tr><td>MBR ← M[MAR]</td><td>read that instruction from memory</td></tr>
+<tr><td>IR ← MBR</td><td>keep it in IR</td></tr>
+<tr><td>PC ← PC + 1</td><td>point PC at the following instruction</td></tr>
+<tr><td><b>Decode</b></td><td>opcode = IR[15–12]; MAR ← IR[11–0]</td><td>control unit splits opcode and address; operand address goes to MAR</td></tr>
+<tr><td><b>Execute</b></td><td>(the instruction's RTN)</td><td>e.g. MBR ← M[MAR] · AC ← AC − MBR</td></tr>
+</table>
+<p>At the start of each cycle the CPU checks for an <b>interrupt</b> (an event that changes the normal flow).</p>
+</div><div class="col">
+<div class="ex"><p class="et">Worked example <span class="src">quiz Q4, prof's solution</span></p>
+PC = 150, M[150] = 4155, M[155] = 0010, AC = 0035.<br/>
+<b>1. Decode 4155</b>: opcode <b>4 (Subt)</b>, operand address <b>155</b>.<br/>
+<b>2. Fetch</b>: MAR ← PC (150) · MBR ← M[MAR] (4155) · IR ← MBR (4155) · PC ← PC + 1 (151)<br/>
+<b>3. Execute Subt 155</b>: MAR ← IR[11–0] (155) · MBR ← M[MAR] (0010) · AC ← AC − MBR<br/>
+Final AC = 0035 − 0010 = <span class="ans">0025 (hex)</span></div>
+<div class="ex"><p class="et">Worked example <span class="src">cheat sheet P4</span></p>
+PC = 200, M[200] = 320A, M[20A] = 0007, AC = 0012.<br/>
+Decode: Add 20A. Fetch: MAR ← 200, MBR ← 320A, IR ← 320A, PC ← 201. Execute: MAR ← 20A, MBR ← 0007, AC ← 0012 + 0007 = <span class="ans">0019</span>, PC = <span class="ans">201</span></div>
+</div></div>
+<div class="trap">⚠ <b>TRAP</b> PC is incremented during <b>fetch</b>, so during execute it already points to the next instruction (151, not 150). A Jump simply overwrites it.</div>
+
+<h3 id="s4-branch">Skipcond and Jump: decisions and loops</h3>
+<div class="row"><div class="col">
+<div class="formula">
+<b>Skipcond</b> (opcode 8) tests the AC. Bits 11–10 of the instruction pick the test:<br/>
+<b>8000</b>: skip if AC &lt; 0 · <b>8400</b>: skip if AC = 0 · <b>8800</b>: skip if AC &gt; 0<br/>
+"Skip" means PC ← PC + 1, so the next instruction is jumped over.<br/>
+<b>Jump X</b> (opcode 9): PC ← X.
+</div>
+<p><b>If/else pattern</b>: compute A − B, Skipcond on the result, put a Jump to the "else" part right after it.</p>
+</div><div class="col">
+<div class="ex"><p class="et">Example: loop that multiplies (Prod = A × Cnt)</p>
+<table class="mono">
+<tr><td>100 Loop,</td><td>Load Prod</td><td>110E</td></tr>
+<tr><td>101</td><td>Add A</td><td>310B</td></tr>
+<tr><td>102</td><td>Store Prod</td><td>210E</td></tr>
+<tr><td>103</td><td>Load Cnt</td><td>110C</td></tr>
+<tr><td>104</td><td>Subt One</td><td>410D</td></tr>
+<tr><td>105</td><td>Store Cnt</td><td>210C</td></tr>
+<tr><td>106</td><td>Skipcond 400</td><td>8400</td></tr>
+<tr><td>107</td><td>Jump Loop</td><td>9100</td></tr>
+<tr><td>108</td><td>Load Prod</td><td>110E</td></tr>
+<tr><td>109</td><td>Output</td><td>6000</td></tr>
+<tr><td>10A</td><td>Halt</td><td>7000</td></tr>
+<tr><td>10B A,</td><td>Dec 4</td><td>0004</td></tr>
+<tr><td>10C Cnt,</td><td>Dec 3</td><td>0003</td></tr>
+<tr><td>10D One,</td><td>Dec 1</td><td>0001</td></tr>
+<tr><td>10E Prod,</td><td>Dec 0</td><td>0000</td></tr>
+</table>
+Each pass adds A to Prod and counts Cnt down. When Cnt hits 0, Skipcond 400 skips the Jump. Output: <span class="ans">12</span> (= 4 × 3).</div>
+</div></div>
+
+<h3 id="s4-asm">Assemblers and the symbol table</h3>
+<div class="row"><div class="col">
+<p>An <b>assembler</b> translates assembly (mnemonics + labels) into machine code. Labels are names for addresses, so the assembler needs two passes:</p>
+<div class="method">▣ <b>METHOD: assemble a MARIE program</b><br/>
+<b>Pass 1 — symbol table</b>: walk the listing, note every label and its address (label → address).<br/>
+<b>Pass 2 — machine code</b>: for each line, write opcode digit + the 3-digit address of its operand (looked up in the symbol table).<br/>
+• No operand (Input, Output, Halt) → address <b>000</b>.<br/>
+• Skipcond keeps its condition: 8000 / 8400 / 8800.<br/>
+• <b>DEC n</b> / <b>HEX n</b> lines are data: write the value as 4 hex digits (DEC 60 = 003C, HEX 0000 = 0000).
+</div>
+</div><div class="col">
+<div class="ex"><p class="et">Worked example <span class="src">quiz Q5, prof's solution</span></p>
+100 Start, LOAD P · 101 ADD Q · 102 SUBT R · 103 STORE S · 104 OUTPUT · 105 HALT · 106 P, DEC 60 · 107 Q, DEC 40 · 108 R, DEC 15 · 109 S, HEX 0000<br/>
+<b>Symbol table</b>: Start 100 · P 106 · Q 107 · R 108 · S 109<br/>
+<table class="mono">
+<tr><th>Instr</th><th>Op</th><th>Addr</th><th>Hex</th></tr>
+<tr><td>LOAD P</td><td>1</td><td>106</td><td><b>1106</b></td></tr>
+<tr><td>ADD Q</td><td>3</td><td>107</td><td><b>3107</b></td></tr>
+<tr><td>SUBT R</td><td>4</td><td>108</td><td><b>4108</b></td></tr>
+<tr><td>STORE S</td><td>2</td><td>109</td><td><b>2109</b></td></tr>
+<tr><td>OUTPUT</td><td>6</td><td>000</td><td><b>6000</b></td></tr>
+<tr><td>HALT</td><td>7</td><td>000</td><td><b>7000</b></td></tr>
+</table>
+(Data words in memory: 003C, 0028, 000F, 0000.)</div>
+</div></div>
+
+<h3 id="s4-trace">Tracing a program</h3>
+<div class="row"><div class="col">
+<p>Keep a table with one row per executed instruction: <b>address · instruction · AC after · memory changed</b>. Follow PC, not the line order, when there are jumps.</p>
+<table>
+<tr><th>Addr</th><th>Instr</th><th>AC (dec)</th><th>Memory</th></tr>
+<tr><td>—</td><td>initial</td><td>0</td><td>M[106]=60, M[107]=40, M[108]=15</td></tr>
+<tr><td>100</td><td>LOAD P</td><td>60</td><td></td></tr>
+<tr><td>101</td><td>ADD Q</td><td>60 + 40 = 100</td><td></td></tr>
+<tr><td>102</td><td>SUBT R</td><td>100 − 15 = 85</td><td></td></tr>
+<tr><td>103</td><td>STORE S</td><td>85</td><td>M[109] = 85</td></tr>
+<tr><td>104</td><td>OUTPUT</td><td>85</td><td>prints 85</td></tr>
+<tr><td>105</td><td>HALT</td><td>85</td><td>stop</td></tr>
+</table>
+<p>Quiz Q5 (iii): final AC = <span class="ans">85</span> (0055 hex).</p>
+</div><div class="col">
+<div class="ex"><p class="et">Example with jumps <span class="src">S2-3 exercise 4</span></p>
+100 LOAD A · 101 ADD One · 102 JUMP S1 · 103 S2, ADD One · 104 STORE A · 105 HALT · 106 S1, ADD A · 107 JUMP S2 · 108 A, HEX 0023 · 109 One, HEX 0001<br/>
+<b>Hex</b>: 1108 · 3109 · 9106 · 3109 · 2108 · 7000 · 3108 · 9103 · 0023 · 0001<br/>
+<b>Trace (hex)</b>: Load A → 0023 · Add One → 0024 · Jump 106 · Add A → 0024 + 0023 = 0047 · Jump 103 · Add One → 0048 · Store A → M[108] = 0048 · Halt<br/>
+Final: <span class="ans">AC = A = 0048</span></div>
+<div class="ex"><p class="et">Example with Skipcond <span class="src">cheat sheet P5</span></p>
+A = 9, B = 14. Load A (9) · Subt B (−5) · Skipcond 000: AC &lt; 0 → skip the Jump · Load B (14) · Jump Done · Store M → M = <span class="ans">14</span>. The program stores max(A, B).</div>
+</div></div>
+
+<h3 id="s4-ctrl">Control units, CISC and RISC</h3>
+<div class="row"><div class="col">
+<table>
+<tr><th></th><th>Hardwired control</th><th>Microprogrammed control</th></tr>
+<tr><td>How</td><td>fixed combinational logic gates generate the control signals</td><td>a small program (microcode) in control memory generates them</td></tr>
+<tr><td>Speed</td><td>fast</td><td>slower</td></tr>
+<tr><td>Changing it</td><td>hard to design and modify</td><td>flexible: rewrite the microcode</td></tr>
+</table>
+</div><div class="col">
+<table>
+<tr><th></th><th>CISC</th><th>RISC</th></tr>
+<tr><td>Instructions</td><td>many, complex, variable length; one can do several operations</td><td>few, simple, fixed length; one operation each</td></tr>
+<tr><td>Memory access</td><td>many instructions can use memory</td><td>load/store only</td></tr>
+<tr><td>Examples</td><td>Intel x86</td><td>MIPS, ARM</td></tr>
+</table>
+</div></div>
+
+<div class="check"><p class="ct">Check yourself</p>
+1. Decode 2109. · 2. Write the fetch RTN from memory. · 3. Machine code for "Skipcond 800"? · 4. A program has 104 HALT and 105 X, DEC 10. Hex for "Load X" and the data word? · 5. After fetching the instruction at 2A0, what is PC?<br/>
+<span class="small">Answers: Store 109 · MAR←PC, MBR←M[MAR], IR←MBR, PC←PC+1 · 8800 · 1105 and 000A · 2A1</span></div>
+</section>

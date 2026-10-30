@@ -1,0 +1,67 @@
+<section class="tab" id="G" data-short="G · Glossary">
+<div class="tabhead">G · Glossary: acronyms, registers, question words</div>
+<p>Most marks lost on "easy" questions come from misreading one word. The words that change the method are marked ★.</p>
+
+<div class="row"><div class="col">
+<h3>Acronyms and register names</h3>
+<table>
+<tr><th>Term</th><th>Means</th><th>Page</th></tr>
+<tr><td>AC</td><td>Accumulator: MARIE's only data register; holds operands and results</td><td><a class="pg" href="#s4-regs"></a></td></tr>
+<tr><td>MAR</td><td>Memory Address Register: the <b>address</b> being read/written</td><td><a class="pg" href="#s4-regs"></a></td></tr>
+<tr><td>MBR</td><td>Memory Buffer Register: the <b>data</b> going to/from memory</td><td><a class="pg" href="#s4-regs"></a></td></tr>
+<tr><td>PC</td><td>Program Counter: address of the <b>next</b> instruction</td><td><a class="pg" href="#s4-regs"></a></td></tr>
+<tr><td>IR</td><td>Instruction Register: the instruction being executed now</td><td><a class="pg" href="#s4-regs"></a></td></tr>
+<tr><td>InREG / OutREG</td><td>Input / output registers (8 bits)</td><td><a class="pg" href="#s4-regs"></a></td></tr>
+<tr><td>ALU</td><td>Arithmetic Logic Unit: does add, subtract, AND, OR, compare</td><td><a class="pg" href="#s3-cpu"></a></td></tr>
+<tr><td>CU</td><td>Control Unit: decodes instructions, sends control signals</td><td><a class="pg" href="#s3-cpu"></a></td></tr>
+<tr><td>ISA</td><td>Instruction Set Architecture: the instructions a CPU understands and their formats</td><td><a class="pg" href="#S5"></a></td></tr>
+<tr><td>RTN / RTL</td><td>Register Transfer Notation/Language: "MAR ← PC" style micro-steps</td><td><a class="pg" href="#s4-rtn"></a></td></tr>
+<tr><td>M[X]</td><td>The <b>contents</b> of memory address X (X itself is just the address)</td><td><a class="pg" href="#s4-rtn"></a></td></tr>
+<tr><td>IR[15–12]</td><td>Bits 15 down to 12 of IR (the opcode)</td><td><a class="pg" href="#s4-isa"></a></td></tr>
+<tr><td>★ MSB / LSB</td><td>Most / least significant <b>bit</b> or <b>byte</b>. Read the context! Q1 means byte, Q2 means bit.</td><td><a class="pg" href="#s2-bytes"></a></td></tr>
+<tr><td>EA</td><td>Effective address: where the operand actually is</td><td><a class="pg" href="#s5-modes"></a></td></tr>
+<tr><td>RPN</td><td>Reverse Polish notation = postfix (A B +)</td><td><a class="pg" href="#s5-postfix"></a></td></tr>
+<tr><td>GPR</td><td>General-purpose register architecture</td><td><a class="pg" href="#s5-storage"></a></td></tr>
+<tr><td>CISC / RISC</td><td>Complex / reduced instruction set computer</td><td><a class="pg" href="#s4-ctrl"></a></td></tr>
+<tr><td>IC, CPI</td><td>Instruction count; cycles per instruction</td><td><a class="pg" href="#s6-cpu"></a></td></tr>
+<tr><td>k, n, τ, t<sub>n</sub></td><td>Pipeline stages, instructions, cycle time, non-pipelined time per instruction</td><td><a class="pg" href="#s6-pipe"></a></td></tr>
+<tr><td>SRAM / DRAM</td><td>Static RAM (flip-flops, cache) / dynamic RAM (capacitors, main memory)</td><td><a class="pg" href="#s7-types"></a></td></tr>
+<tr><td>LRU / FIFO / LFU</td><td>Least recently used / first in first out / least frequently used</td><td><a class="pg" href="#s7-repl"></a></td></tr>
+<tr><td>MMU, TLB</td><td>Memory management unit; translation look-aside buffer (cache of page-table entries)</td><td><a class="pg" href="#S8"></a></td></tr>
+<tr><td>VLSI, IC</td><td>Very-large-scale integration; integrated circuit (in history)</td><td><a class="pg" href="#s1-gen"></a></td></tr>
+<tr><td>SaaS/PaaS/IaaS</td><td>Software / Platform / Infrastructure as a Service</td><td><a class="pg" href="#s1-cloud"></a></td></tr>
+</table>
+</div><div class="col">
+<h3>Indonesian question words <span class="id">(kata soal)</span></h3>
+<table>
+<tr><th>Indonesian</th><th>English → what to do</th></tr>
+<tr><td>Hitunglah / Tentukan / Carilah</td><td>Calculate / Determine / Find → show formula + substitution</td></tr>
+<tr><td>Jelaskan</td><td>Explain → 2–3 sentences with the key term</td></tr>
+<tr><td>Bandingkan / Bedakan</td><td>Compare / Distinguish → table of differences</td></tr>
+<tr><td>★ Apakah mungkin … ? Buktikan</td><td>Is it possible? Prove → count bit patterns (expanding opcodes)</td></tr>
+<tr><td>Ubahlah / Konversikan</td><td>Convert (base, notation)</td></tr>
+<tr><td>Telusuri / Lacak eksekusi</td><td>Trace the execution → table of AC, PC, memory</td></tr>
+<tr><td>Tuliskan kode heksadesimal</td><td>Write the hex machine code</td></tr>
+<tr><td>Tabel simbol</td><td>Symbol table (label → address)</td></tr>
+<tr><td>alamat / ruang alamat</td><td>address / address space</td></tr>
+<tr><td>memori utama / sekunder</td><td>main / secondary memory</td></tr>
+<tr><td>dapat dialamati per byte / per word</td><td>byte-addressable / word-addressable</td></tr>
+<tr><td>bilangan biner / heksadesimal</td><td>binary / hexadecimal number</td></tr>
+<tr><td>komplemen dua</td><td>two's complement</td></tr>
+<tr><td>bit/byte paling signifikan</td><td>most significant bit/byte</td></tr>
+<tr><td>urutan byte</td><td>byte order (endianness)</td></tr>
+<tr><td>kode operasi / operan</td><td>opcode / operand</td></tr>
+<tr><td>siklus jam / frekuensi</td><td>clock cycle / frequency</td></tr>
+<tr><td>tahap / segmen (pipeline)</td><td>stage / segment</td></tr>
+<tr><td>★ rasio percepatan</td><td>speedup ratio = old time ÷ new time</td></tr>
+<tr><td>★ prosesor yang lebih tua / lebih baru</td><td>older (slower) / newer (faster) processor</td></tr>
+<tr><td>blok / baris (cache)</td><td>block / line</td></tr>
+<tr><td>pemetaan langsung</td><td>direct mapping</td></tr>
+<tr><td>asosiatif penuh / asosiatif set</td><td>fully associative / set associative</td></tr>
+<tr><td>hit / miss, rasio hit</td><td>hit / miss, hit rate</td></tr>
+<tr><td>kebijakan penggantian / penulisan</td><td>replacement / write policy</td></tr>
+<tr><td>memori virtual, halaman, bingkai</td><td>virtual memory, page, frame</td></tr>
+</table>
+</div></div>
+<div class="trap">⚠ <b>TRAP</b> "Address" vs "contents". In "M[150] = 4155", 150 is where it lives and 4155 is what is stored there. Every MARIE question tests whether you keep these apart.</div>
+</section>

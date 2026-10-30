@@ -1,0 +1,47 @@
+<section class="tab" id="I" data-short="I · Problem-type Index">
+<div class="tabhead">I · Problem-type index: "I see … → I do … → page"</div>
+<p>Look up the <b>phrase or setup</b> in the question, not the chapter name. The last column is the cheat-sheet box for the exam.</p>
+<table class="idx">
+<tr><th>The question says / shows …</th><th>Method</th><th>Page</th><th>Sheet</th></tr>
+<tr class="grp"><td colspan="4">Data representation</td></tr>
+<tr><td>a hex value, "binary representation"</td><td>each hex digit → 4 bits</td><td><a class="pg" href="#s2-hex"></a></td><td>T1</td></tr>
+<tr><td>"extract the middle bytes / the MSB / the LSB" of a hex value</td><td>split into 2-digit pairs, count from the left (MSB) or right (LSB)</td><td><a class="pg" href="#s2-bytes"></a></td><td>T1</td></tr>
+<tr><td>"interpreted as two's complement", "positive or negative?"</td><td>look at the leftmost bit; value = unsigned − 2ⁿ if negative</td><td><a class="pg" href="#s2-tc"></a></td><td>T2</td></tr>
+<tr><td>"represent −x in n bits"</td><td>+x in binary → flip bits → add 1</td><td><a class="pg" href="#s2-tc"></a></td><td>T2</td></tr>
+<tr><td>characters "packed" in a word, ASCII</td><td>1 character = 1 byte (2 hex digits)</td><td><a class="pg" href="#s2-char"></a></td><td>T1</td></tr>
+<tr><td>"stored at address … big/little endian"</td><td>pad to full width, write bytes in order (big) or reversed (little)</td><td><a class="pg" href="#s2-endian"></a></td><td>T12</td></tr>
+<tr class="grp"><td colspan="4">Performance</td></tr>
+<tr><td>"performance doubles every d years", older/newer processor</td><td>factor = 2^(years/d); older × factor, newer ÷ factor</td><td><a class="pg" href="#s1-moore"></a></td><td>T3</td></tr>
+<tr><td>GHz, MHz, "cycle time"</td><td>T = 1/f</td><td><a class="pg" href="#s3-clock"></a></td><td>T3</td></tr>
+<tr><td>instruction count, CPI, clock rate, "which is faster?"</td><td>CPU time = IC × CPI ÷ f; speedup = old ÷ new</td><td><a class="pg" href="#s6-cpu"></a></td><td>T3</td></tr>
+<tr><td>"k-segment pipeline", "speedup ratio", n tasks</td><td>(k + n − 1)·τ vs n·t<sub>n</sub></td><td><a class="pg" href="#s6-pipe"></a></td><td>T8</td></tr>
+<tr><td>"stall", "hazard", "branch", "forwarding"</td><td>hazard types; add s stall cycles</td><td><a class="pg" href="#s6-haz"></a></td><td>T8</td></tr>
+<tr class="grp"><td colspan="4">MARIE</td></tr>
+<tr><td>a 4-digit hex instruction, "decode"</td><td>first digit = opcode, last 3 = address</td><td><a class="pg" href="#s4-isa"></a></td><td>T4</td></tr>
+<tr><td>"register transfers", "fetch cycle", "RTN/RTL"</td><td>MAR←PC · MBR←M[MAR] · IR←MBR · PC←PC+1, then the instruction's RTN</td><td><a class="pg" href="#s4-fde"></a></td><td>T5</td></tr>
+<tr><td>a program with labels, "hex code", "symbol table"</td><td>two-pass assembly</td><td><a class="pg" href="#s4-asm"></a></td><td>T6</td></tr>
+<tr><td>"final value of AC", "what does the program compute?"</td><td>trace table (AC, PC, memory)</td><td><a class="pg" href="#s4-trace"></a></td><td>T6</td></tr>
+<tr><td>Skipcond, Jump, loops, if/else</td><td>Skipcond 000/400/800 skips the next line</td><td><a class="pg" href="#s4-branch"></a></td><td>T4</td></tr>
+<tr><td>"why is MAR 12 bits and AC 16 bits?"</td><td>addresses vs data</td><td><a class="pg" href="#s4-regs"></a></td><td>C</td></tr>
+<tr><td>hardwired vs microprogrammed; CISC vs RISC</td><td>comparison tables</td><td><a class="pg" href="#s4-ctrl"></a></td><td>C</td></tr>
+<tr class="grp"><td colspan="4">Instruction sets</td></tr>
+<tr><td>"is it possible to encode … instructions with … operands?"</td><td>expanding opcodes: Σ count·2^(operand bits) ≤ 2^(instr bits)</td><td><a class="pg" href="#s5-expand"></a></td><td>T7</td></tr>
+<tr><td>"reverse Polish / postfix", "stack machine"</td><td>operator after operands; stack evaluation</td><td><a class="pg" href="#s5-postfix"></a></td><td>T14</td></tr>
+<tr><td>"write code on a 3-/2-/1-/0-address machine"</td><td>templates</td><td><a class="pg" href="#s5-ops"></a></td><td>T14</td></tr>
+<tr><td>immediate / direct / indirect / indexed, "value loaded"</td><td>effective-address rules</td><td><a class="pg" href="#s5-modes"></a></td><td>T13</td></tr>
+<tr class="grp"><td colspan="4">Memory</td></tr>
+<tr><td>"how many bits to address a A×B memory"</td><td>log₂(# addressable units)</td><td><a class="pg" href="#s3-addr"></a></td><td>T9</td></tr>
+<tr><td>"format of the address as seen by the cache", tag/index/offset</td><td>offset = log₂ block, index = log₂ lines (or sets)</td><td><a class="pg" href="#s7-fields"></a></td><td>T10</td></tr>
+<tr><td>"to which cache block/set does address X map?"</td><td>drop offset bits, keep index bits</td><td><a class="pg" href="#s7-map"></a></td><td>T10</td></tr>
+<tr><td>a list of block references, "hit or miss"</td><td>trace table per line/set</td><td><a class="pg" href="#s7-trace"></a></td><td>T11</td></tr>
+<tr><td>LRU / FIFO / LFU</td><td>replacement rules</td><td><a class="pg" href="#s7-repl"></a></td><td>T11</td></tr>
+<tr><td>write-through vs write-back, dirty bit</td><td>write policies</td><td><a class="pg" href="#s7-write"></a></td><td>T11</td></tr>
+<tr><td>hit rate, "effective access time"</td><td>EAT = H·t<sub>cache</sub> + (1−H)·t<sub>mem</sub></td><td><a class="pg" href="#s7-hit"></a></td><td>C</td></tr>
+<tr><td>SRAM/DRAM, locality, hierarchy goals</td><td>concept tables</td><td><a class="pg" href="#s7-types"></a></td><td>C</td></tr>
+<tr><td>page table, page fault, virtual → physical address</td><td>split VA into page # | offset</td><td><a class="pg" href="#S8"></a></td><td>C</td></tr>
+<tr class="grp"><td colspan="4">Concepts (Session 1)</td></tr>
+<tr><td>organization vs architecture</td><td>"visible to the programmer?"</td><td><a class="pg" href="#s1-orgarch"></a></td><td>C</td></tr>
+<tr><td>von Neumann, bottleneck, Harvard, parallel</td><td>definitions</td><td><a class="pg" href="#s1-vn"></a></td><td>C</td></tr>
+<tr><td>level hierarchy, generations, cloud, Moore's limits</td><td>tables</td><td><a class="pg" href="#s1-levels"></a></td><td>C</td></tr>
+</table>
+</section>

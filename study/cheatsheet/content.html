@@ -1,0 +1,212 @@
+<section class="page">
+<div class="bar">SIDE A · QUIZ + PRACTICE <span class="sub">CoA Midterm (UTS) · S1–S7 · each question shows its source box on the back as <span class="tag">T#</span></span></div>
+
+<h2>QUIZ (prof's solutions, may be recycled)</h2>
+
+<div class="card"><p class="q"><b>Q1</b> 32-bit 0x778899AA → keep the 2 middle bytes. 16-bit hex and binary? <span class="tag">T1</span></p>
+<p>Bytes 77 | <u>88 | 99</u> | AA → drop MSB 77 and LSB AA → 8899 → 8=1000 8=1000 9=1001 9=1001</p>
+<p class="ans">0x8899 = 1000 1000 1001 1001</p></div>
+
+<div class="card"><p class="q"><b>Q2</b> "ME" = 0x4D45. 16-bit binary? Read as two's complement: + or −? <span class="tag">T1</span><span class="tag">T2</span></p>
+<p>4=0100 D=1101 4=0100 5=0101. MSB (leftmost bit) = 0 → positive.</p>
+<p class="ans">0100 1101 0100 0101 · positive (+19781)</p></div>
+
+<div class="card"><p class="q"><b>Q3</b> 200 s now; performance doubles every 2 yrs. Time on a CPU 4 yrs <u>older</u>? <span class="tag">T3</span></p>
+<p>4 ÷ 2 = 2 doublings → 2² = 4× slower → 200 × 4</p>
+<p class="ans">800 s</p></div>
+
+<div class="card"><p class="q"><b>Q4</b> MARIE: PC=150, M[150]=4155, M[155]=0010, AC=0035. Decode · fetch · execute + final AC <span class="tag">T4</span><span class="tag">T5</span></p>
+<p>Decode: opcode 4 = Subt, address 155 → Subt 155<br/>
+Fetch: MAR←PC · MBR←M[MAR] · IR←MBR · PC←PC+1 (PC = 151)<br/>
+Execute: MAR←IR[11–0] · MBR←M[MAR] (0010) · AC←AC−MBR = 0035 − 0010</p>
+<p class="ans">AC = 0025 hex</p></div>
+
+<div class="card"><p class="q"><b>Q5</b> 100 Start, LOAD P · ADD Q · SUBT R · STORE S · OUTPUT · HALT · 106 P DEC 60 · 107 Q DEC 40 · 108 R DEC 15 · 109 S HEX 0000. Hex 100–105, symbol table, final AC <span class="tag">T4</span><span class="tag">T6</span></p>
+<table class="c"><tr><th>Instr</th><td>LOAD P</td><td>ADD Q</td><td>SUBT R</td><td>STORE S</td><td>OUTPUT</td><td>HALT</td></tr>
+<tr><th>Hex</th><td><b>1106</b></td><td><b>3107</b></td><td><b>4108</b></td><td><b>2109</b></td><td><b>6000</b></td><td><b>7000</b></td></tr></table>
+<p>Symbols: Start 100 · P 106 · Q 107 · R 108 · S 109. Trace: 60 → 100 → 85 → M[109]=85 → out 85</p>
+<p class="ans">AC = 85 decimal (0055 hex)</p></div>
+
+<div class="card"><p class="q"><b>Q6</b> 16-bit instr, expanding opcodes: 5 × three 4-bit operands, 30 × two 5-bit, 50 × one 8-bit. Possible? <span class="tag">T7</span></p>
+<p>5·2¹² + 30·2¹⁰ + 50·2⁸ = 20,480 + 30,720 + 12,800 = 64,000 ≤ 2¹⁶ = 65,536</p>
+<p class="ans">Possible (1,536 patterns unused)</p></div>
+
+<div class="card"><p class="q"><b>Q7</b> 5-stage pipeline, 40 ns clock, non-pipelined = sum of stages. Speedup for 800 instr? <span class="tag">T8</span></p>
+<p>t<sub>n</sub> = 5·40 = 200 ns. Non-pipe 800·200 = 160,000 ns. Pipe (5+800−1)·40 = 32,160 ns</p>
+<p class="ans">S = 160,000 ÷ 32,160 ≈ 4.975</p></div>
+
+<div class="card"><p class="q"><b>Q8</b> 2²⁴ B byte-addr memory, direct-mapped, 1024 blocks × 16 B. # blocks · Tag/Index/Offset · index of 0x5A3C8F <span class="tag">T10</span><span class="tag">T1</span></p>
+<p>Blocks 2²⁴/2⁴ = 2²⁰. Offset log₂16 = 4 · Index log₂1024 = 10 · Tag 24−10−4 = 10<br/>
+0101 1010 00 | <u>11 1100 1000</u> | 1111 → index = 512+256+128+64+8</p>
+<p class="ans">2²⁰ blocks · 10 | 10 | 4 · block 968</p></div>
+
+<h2>PRACTICE (made up, same patterns as the quiz)</h2>
+
+<div class="card"><p class="q"><b>P1</b> 32-bit 0xC0FFEE42 → 16-bit code from its MSB followed by its LSB. Hex and binary? <span class="tag">T1</span></p>
+<p>Bytes <u>C0</u> | FF | EE | <u>42</u> → C0 then 42 → C=1100 0=0000 4=0100 2=0010</p>
+<p class="ans">0xC042 = 1100 0000 0100 0010</p></div>
+
+<div class="card"><p class="q"><b>P2</b> (a) 16-bit 0xF3A0 as two's complement: decimal? (b) −37 in 8-bit two's complement? <span class="tag">T2</span></p>
+<p>(a) F ≥ 8 → negative. Unsigned 62,368 − 2¹⁶ (65,536)<br/>(b) +37 = 00100101 → flip 11011010 → +1</p>
+<p class="ans">(a) −3168 · (b) 11011011 = 0xDB</p></div>
+
+<div class="card"><p class="q"><b>P3</b> 60 s now; performance doubles every 1.5 yrs. Time on a CPU 6 yrs <u>newer</u>? <span class="tag">T3</span></p>
+<p>6 ÷ 1.5 = 4 doublings → 2⁴ = 16× faster → 60 ÷ 16</p>
+<p class="ans">3.75 s</p></div>
+
+<div class="card"><p class="q"><b>P4</b> MARIE: PC=200, M[200]=320A, M[20A]=0007, AC=0012 (hex). Decode · fetch · execute · final AC and PC <span class="tag">T4</span><span class="tag">T5</span></p>
+<p>Decode: opcode 3 = Add, address 20A → Add 20A<br/>
+Fetch: MAR←PC (200) · MBR←M[MAR] (320A) · IR←MBR · PC←PC+1 (201)<br/>
+Execute: MAR←IR[11–0] (20A) · MBR←M[MAR] (0007) · AC←AC+MBR = 0012 + 0007</p>
+<p class="ans">AC = 0019 hex · PC = 201</p></div>
+
+<div class="card"><p class="q"><b>P5</b> 100 LOAD A · 101 SUBT B · 102 SKIPCOND 000 · 103 JUMP UseA · 104 LOAD B · 105 JUMP Done · 106 UseA, LOAD A · 107 Done, STORE M · 108 HALT · 109 A DEC 9 · 10A B DEC 14 · 10B M DEC 0. Hex 100–108, symbol table, final AC and M. What does it compute? <span class="tag">T4</span><span class="tag">T6</span></p>
+<table class="c"><tr><th>Addr</th><td>100</td><td>101</td><td>102</td><td>103</td><td>104</td><td>105</td><td>106</td><td>107</td><td>108</td></tr>
+<tr><th>Hex</th><td><b>1109</b></td><td><b>410A</b></td><td><b>8000</b></td><td><b>9106</b></td><td><b>110A</b></td><td><b>9107</b></td><td><b>1109</b></td><td><b>210B</b></td><td><b>7000</b></td></tr></table>
+<p>Symbols: UseA 106 · Done 107 · A 109 · B 10A · M 10B<br/>
+Trace: AC 9 → 9 − 14 = −5 → AC &lt; 0 so skip 103 → LOAD B (14) → JUMP Done → STORE M</p>
+<p class="ans">AC = 14 = M · stores max(A, B)</p></div>
+
+<div class="card"><p class="q"><b>P6</b> 12-bit instr, 4-bit address fields: 14 two-address, 32 one-address, 16 zero-address. Possible? <span class="tag">T7</span></p>
+<p>14·2⁸ + 32·2⁴ + 16·2⁰ = 3584 + 512 + 16 = 4112 &gt; 2¹² = 4096<br/>
+Escape check: 16 − 14 = 2 left → 2·2⁴ = 32, all used → 0 left for zero-address</p>
+<p class="ans">Not possible</p></div>
+
+<div class="card"><p class="q"><b>P7</b> 4-stage pipeline, 25 ns clock, 100 instr, non-pipelined instr = 100 ns. Speedup? With 6 stall cycles? <span class="tag">T8</span></p>
+<p>Non-pipe 100·100 = 10,000 ns. Pipe (4+100−1)·25 = 2575 ns. With stalls (103+6)·25 = 2725 ns</p>
+<p class="ans">S ≈ 3.883 · with stalls ≈ 3.670</p></div>
+
+<div class="card"><p class="q"><b>P8</b> 2¹⁶ B byte-addr memory, 64-block cache, 8 B/block. # blocks · direct-mapped fields + line of 0xBEEF · 2-way fields + set of 0xBEEF <span class="tag">T10</span><span class="tag">T1</span></p>
+<p>Blocks 2¹⁶/2³ = 2¹³. Direct: offset 3 · index log₂64 = 6 · tag 16−6−3 = 7<br/>
+0xBEEF = 1011111 | <u>011101</u> | 111 → line 29 (tag 95)<br/>
+2-way: 64/2 = 32 sets → offset 3 · set 5 · tag 8 → 10111110 | <u>11101</u> | 111 → set 29 (tag 190)</p>
+<p class="ans">2¹³ blocks · 7|6|3, line 29 · 8|5|3, set 29</p></div>
+
+<div class="card"><p class="q"><b>P9</b> 8M × 32 memory. Address bits if word-addressable? Byte-addressable? <span class="tag">T9</span></p>
+<p>Word: 8M = 2²³ units. Byte: 8M × (32/8) = 32M = 2²⁵ units</p>
+<p class="ans">23 bits · 25 bits</p></div>
+
+<div class="card"><p class="q"><b>P10</b> (a) Store 0xDEADBEEF at address 200, big and little endian. (b) Little-endian memory holds 78 56 34 12 at 0–3. Value? <span class="tag">T12</span></p>
+<table class="c"><tr><th>Addr</th><td>200</td><td>201</td><td>202</td><td>203</td></tr>
+<tr><th>Big</th><td>DE</td><td>AD</td><td>BE</td><td>EF</td></tr>
+<tr><th>Little</th><td>EF</td><td>BE</td><td>AD</td><td>DE</td></tr></table>
+<p>(b) Lowest address holds the LSB → reverse the bytes: 12 34 56 78</p>
+<p class="ans">(a) table above · (b) 0x12345678</p></div>
+
+<div class="card"><p class="q"><b>P11</b> (a) Direct-mapped, 4 blocks, refs 2, 3, 6, 2, 10, 3, 6: hit/miss? (b) Fully associative, 2 blocks, refs 1, 2, 1, 3, 1, 2: LRU vs FIFO hits? <span class="tag">T11</span></p>
+<p>(a) line = block mod 4 → 2,3,2,2,2,3,2. Line 2 keeps being replaced: M M M M M <b>H</b> M<br/>
+(b) LRU: M M H · 3 evicts 2 (1 was just used) · 1 H · 2 M<br/>
+FIFO: M M H · 3 evicts 1 (loaded first) · 1 M · 2 M</p>
+<p class="ans">(a) 1 hit · (b) LRU 2 hits, FIFO 1 hit</p></div>
+
+<div class="card"><p class="q"><b>P12</b> LOAD 300. M[300]=500, M[500]=700, M[800]=900, index R1=500. Value loaded for each mode? <span class="tag">T13</span></p>
+<p>Immediate: 300 itself · Direct: M[300] · Indirect: M[M[300]] = M[500] · Indexed: EA = 300+500 = 800 → M[800]</p>
+<p class="ans">300 · 500 · 700 · 900</p></div>
+
+<div class="card"><p class="q"><b>P13</b> 4×10⁸ instr, CPI 2.5, 2 GHz. New CPU: CPI 3, 2.5 GHz. CPU times and speedup? <span class="tag">T3</span></p>
+<p>Old 4e8 × 2.5 ÷ 2e9 = 0.5 s · New 4e8 × 3 ÷ 2.5e9 = 0.48 s · S = 0.5 ÷ 0.48</p>
+<p class="ans">0.5 s · 0.48 s · S ≈ 1.042 (new is faster)</p></div>
+
+<div class="card"><p class="q"><b>P14</b> (a) (A+B)×(C−D) to postfix. (b) Z = (A+B)×C on a 3-address and a 1-address machine <span class="tag">T14</span></p>
+<p>(a) Write operands, then the operator: A B + · C D − · ×<br/>
+(b) 3-addr: ADD R1,A,B · MULT Z,R1,C<br/>1-addr (AC): LOAD A · ADD B · MULT C · STORE Z</p>
+<p class="ans">(a) A B + C D − ×</p></div>
+</section>
+
+
+<section class="page">
+<div class="bar">SIDE B · THEORY &amp; FORMULAS <span class="sub">look up the <span class="tag">T#</span> from the front</span></div>
+
+<div class="box"><p class="bt"><span class="tag">T1</span> Hex ↔ binary · bytes</p>
+<table class="hex">
+<tr><td>0 0000</td><td>4 0100</td><td>8 1000</td><td>C 1100</td></tr>
+<tr><td>1 0001</td><td>5 0101</td><td>9 1001</td><td>D 1101</td></tr>
+<tr><td>2 0010</td><td>6 0110</td><td>A 1010</td><td>E 1110</td></tr>
+<tr><td>3 0011</td><td>7 0111</td><td>B 1011</td><td>F 1111</td></tr>
+</table>
+<p>1 hex digit = 4 bits · 1 byte = 2 hex digits. 32-bit = 4 bytes: <b>MSB</b> = leftmost pair, <b>LSB</b> = rightmost. Bin → hex: group 4 from the right. Bits → decimal: Σ bit × 2^position (…128 64 32 16 8 4 2 1). ASCII: 7 bits in 1 byte ('A' 41, 'a' 61, '0' 30); same bits can be text, number or instruction.</p></div>
+
+<div class="box"><p class="bt"><span class="tag">T2</span> Two's complement (n bits)</p>
+<p>Range −2ⁿ⁻¹ … 2ⁿ⁻¹ − 1 (8-bit −128…127 · 16-bit −32768…32767). Unsigned: 0 … 2ⁿ − 1.<br/>
+<b>Sign:</b> MSB 0 → +, MSB 1 → −. Hex: first digit 0–7 → +, 8–F → −.<br/>
+<b>Negate:</b> write +value, flip all bits, add 1 (−10: 00001010 → 11110101 → 11110110).<br/>
+<b>Decode a negative:</b> value = unsigned − 2ⁿ (0xF6 = 246 − 256 = −10).</p></div>
+
+<div class="box"><p class="bt"><span class="tag">T3</span> Moore's Law · CPU performance</p>
+<p><b>Factor = 2^(years ÷ doubling period)</b>. Time ∝ 1/performance: older CPU → time × factor; newer → time ÷ factor.<br/>
+<b>CPU time = IC × CPI ÷ f = IC × CPI × T</b> · cycles = IC × CPI · f = 1/T (1 GHz ↔ 1 ns, 2 GHz ↔ 0.5 ns) · <b>Speedup = old time ÷ new time</b>.</p></div>
+
+<div class="box"><p class="bt"><span class="tag">T4</span> MARIE: format, registers, opcodes</p>
+<p>4K words = 2¹² → <b>12-bit address</b>; 16-bit word/instr: <b>opcode IR[15–12] | address IR[11–0]</b> → 1 hex digit + 3 hex digits. Word-addressable, accumulator-based.<br/>
+AC 16 (data) · MAR 12 (address) · MBR 16 (memory data) · PC 12 (next instr) · IR 16 (current instr) · InREG/OutREG 8.</p>
+<table class="c">
+<tr><th>Op</th><th>Instr</th><th>Meaning</th><th>Op</th><th>Instr</th><th>Meaning</th></tr>
+<tr><td>1</td><td>Load X</td><td>AC ← M[X]</td><td>6</td><td>Output</td><td>OutREG ← AC</td></tr>
+<tr><td>2</td><td>Store X</td><td>M[X] ← AC</td><td>7</td><td>Halt</td><td>stop</td></tr>
+<tr><td>3</td><td>Add X</td><td>AC ← AC + M[X]</td><td>8</td><td>Skipcond</td><td>skip next if 000: AC&lt;0 · 400: AC=0 · 800: AC&gt;0</td></tr>
+<tr><td>4</td><td>Subt X</td><td>AC ← AC − M[X]</td><td>9</td><td>Jump X</td><td>PC ← X</td></tr>
+<tr><td>5</td><td>Input</td><td>AC ← InREG</td><td></td><td></td><td></td></tr>
+</table></div>
+
+<div class="box"><p class="bt"><span class="tag">T5</span> Fetch–decode–execute (RTN)</p>
+<table class="c">
+<tr><th>Fetch</th><td>MAR ← PC · MBR ← M[MAR] · IR ← MBR · PC ← PC + 1</td></tr>
+<tr><th>Decode</th><td>opcode = IR[15–12] · MAR ← IR[11–0]</td></tr>
+<tr><th>Load</th><td>MBR ← M[MAR] · AC ← MBR</td></tr>
+<tr><th>Store</th><td>MBR ← AC · M[MAR] ← MBR</td></tr>
+<tr><th>Add / Subt</th><td>MBR ← M[MAR] · AC ← AC ± MBR</td></tr>
+</table>
+<p>Memory is always reached through MAR (address) and MBR (data). PC already points to the next instruction during execute.</p></div>
+
+<div class="box"><p class="bt"><span class="tag">T6</span> Assembling a MARIE program</p>
+<p>1. <b>Symbol table</b> (pass 1): every label → its address. 2. <b>Hex</b> (pass 2): opcode digit + 3-digit address of the operand label. No operand (Input, Output, Halt) → 000. Skipcond keeps its condition (8000/8400/8800). DEC/HEX lines are data (DEC 60 = 003C).<br/>
+3. <b>Trace</b>: track AC, PC and memory written by Store. Jump/Skipcond change PC.</p></div>
+
+<div class="box"><p class="bt"><span class="tag">T7</span> Expanding opcodes</p>
+<p><b>Pattern count (prof's method):</b> each instruction uses 2^(operand bits) patterns.<br/>
+Σ count × 2^(operand bits) ≤ 2^(instruction bits) → possible.<br/>
+<b>Escape check:</b> opcode bits = instr bits − operand bits. Group 1 gets 2^(opcode bits) codes; leftover codes × 2^(extra opcode bits) feed the next group. Leftover 0 too early → impossible.</p></div>
+
+<div class="box"><p class="bt"><span class="tag">T8</span> Pipelining</p>
+<p>k stages, n instr, τ cycle, t<sub>n</sub> non-pipelined instr time (= kτ if equal stages).<br/>
+<b>Pipelined = (k + n − 1)·τ</b> (+ s stalls: (k + n − 1 + s)·τ) · <b>Non-pipelined = n·t<sub>n</sub></b> · <b>S = n·t<sub>n</sub> ÷ ((k+n−1)·τ)</b> → k as n grows.<br/>
+Hazards: structural (same hardware) · data (result not ready → forwarding) · control (branch → flush/prediction).</p></div>
+
+<div class="box"><p class="bt"><span class="tag">T9</span> Address bits</p>
+<p><b>bits = log₂(# addressable units)</b>. Word-addressable: units = # words. Byte-addressable: units = words × (bits per word ÷ 8).<br/>
+2¹⁰ 1K · 2¹² 4K · 2¹⁶ 64K · 2²⁰ 1M · 2²² 4M · 2²³ 8M · 2²⁴ 16M · 2²⁵ 32M · 2³⁰ 1G</p></div>
+
+<div class="box"><p class="bt"><span class="tag">T10</span> Cache address fields</p>
+<p>Address = <b>Tag | Index (or Set) | Offset</b>, split from the <u>right</u>.<br/>
+Offset = log₂(block bytes) · Index = log₂(# lines) · Set bits = log₂(lines ÷ N) for N-way · Fully associative: no index · Tag = remaining bits.<br/>
+# memory blocks = memory ÷ block size · block # = ⌊addr ÷ block⌋ · line = block mod lines · set = block mod sets.</p></div>
+
+<div class="box"><p class="bt"><span class="tag">T11</span> Cache tracing · replacement · writes</p>
+<p><b>Direct:</b> line = block mod lines; new block always replaces the old one. <b>Set assoc.:</b> set = block mod sets, any line in the set. <b>Fully:</b> any line.<br/>
+Hit = block already there. Hit rate = hits ÷ accesses.<br/>
+<b>LRU</b>: evict least recently <u>used</u> (a hit refreshes it). <b>FIFO</b>: evict oldest <u>loaded</u> (hits change nothing). LFU: fewest uses. Same result unless a hit happens before an eviction.<br/>
+<b>Write-through</b>: cache + memory every write (consistent, more traffic). <b>Write-back</b>: cache only + dirty bit, memory written on replacement.</p></div>
+
+<div class="box"><p class="bt"><span class="tag">T12</span> Endianness</p>
+<p><b>Big</b>: MSB at lowest address (write bytes left → right). <b>Little</b>: LSB at lowest address (reverse the bytes). Pad to full width first (0x1234 as 32-bit = 00 00 12 34). Bits inside a byte never change.<br/>
+Big: UNIX, MIPS, network order. Little: Intel x86. Bi-endian: MIPS, ARM.</p></div>
+
+<div class="box"><p class="bt"><span class="tag">T13</span> Addressing modes</p>
+<p>Immediate: operand in the instruction · Direct: EA = A → M[A] · Register: in a register · Indirect: EA = M[A] → M[M[A]] · Indexed: EA = A + index reg → M[EA] · Array: base + i × element size.</p></div>
+
+<div class="box"><p class="bt"><span class="tag">T14</span> Instruction formats · postfix</p>
+<p>Postfix (RPN): operands then operator; (A+B)×C → A B + C ×. Stack (0-addr) · Accumulator (1-addr, MARIE) · GPR (2/3-addr).<br/>
+3-addr: OP dest,src1,src2 · 2-addr: OP dest,src (dest = dest OP src) · 1-addr: OP X uses AC. Fixed length = fast decode; variable = compact.</p></div>
+
+<div class="box"><p class="bt"><span class="tag">C</span> Concepts for short-answer questions</p>
+<ul>
+<li><b>Architecture</b> = what the programmer sees (ISA, registers, data types, addressing). <b>Organization</b> = how it's built (control signals, buses, memory tech).</li>
+<li><b>Von Neumann</b>: stored program, CPU + memory + I/O, one shared CPU–memory path = <b>bottleneck</b>. Harvard: separate instruction/data paths.</li>
+<li><b>Bus</b>: data · address · control lines. <b>CPU</b> = datapath (registers, ALU) + control unit. Hardwired control fast/rigid; microprogrammed flexible/slower.</li>
+<li><b>CISC</b>: many complex variable-length instr (x86). <b>RISC</b>: few simple fixed-length, load/store (MIPS, ARM).</li>
+<li><b>Hierarchy</b> registers → cache → RAM → disk: capacity ↑, cost/bit ↓, latency ↑ going down. Goal: near-fastest speed at near-cheapest cost.</li>
+<li><b>SRAM</b> flip-flop, fast, cache. <b>DRAM</b> capacitor, refresh, main memory. <b>Temporal</b> locality: reuse soon; <b>spatial</b>: neighbours soon.</li>
+<li><b>Virtual memory</b>: page table/MMU maps virtual → physical; page fault = page on disk; TLB caches page-table entries.</li>
+<li>2 driving factors of computer development: cost and performance. Moore's limits: atom size, heat, cost.</li>
+</ul></div>
+</section>

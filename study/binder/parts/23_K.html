@@ -1,0 +1,99 @@
+<section class="tab" id="K" data-short="K · Answer Key">
+<div class="tabhead">K · Answer key: worked solutions</div>
+<p>The page links point to the method. Answers are highlighted.</p>
+
+<div class="kq"><span class="kt">1. Conversions</span> → <a class="pg" href="#c-conv"></a>, <a class="pg" href="#c-hexarith"></a><br/>
+(a) 3 = 0011, C = 1100, 7 = 0111 → <span class="ans">0011 1100 0111</span>; 3·256 + 12·16 + 7 = <span class="ans">967</span><br/>
+(b) 200 − 128 = 72 − 64 = 8 − 8 = 0 → <span class="ans">1100 1000</span> = <span class="ans">0xC8</span><br/>
+(c) A + C = 22 = 16 + 6 → 6 carry 1; 2 + 3 + 1 = 6 → <span class="ans">0x66</span> (42 + 60 = 102 ✓)</div>
+
+<div class="kq"><span class="kt">2. Two's complement</span> → <a class="pg" href="#s2-tc"></a><br/>
+(a) Unsigned 15·4096 + 15·256 + 13·16 + 6 = <span class="ans">65,494</span>. First digit F → negative: 65,494 − 65,536 = <span class="ans">−42</span><br/>
+(b) +100 = 0110 0100 → flip 1001 1011 → +1 → <span class="ans">1001 1100 = 0x9C</span> (check: 156 − 256 = −100 ✓)<br/>
+(c) −2¹¹ … 2¹¹ − 1 = <span class="ans">−2048 … 2047</span></div>
+
+<div class="kq"><span class="kt">3. Characters and bytes</span> → <a class="pg" href="#s2-char"></a>, <a class="pg" href="#s2-bytes"></a><br/>
+(a) <span class="ans">0x4849 = 0100 1000 0100 1001</span>. Leftmost bit 0 → <span class="ans">positive</span> (+18,505)<br/>
+(b) Bytes 12 | AB | 34 | CD → MSB <span class="ans">0x12</span>, LSB <span class="ans">0xCD</span>, middle bytes <span class="ans">0xAB34</span></div>
+
+<div class="kq"><span class="kt">4. Endianness</span> → <a class="pg" href="#s2-endian"></a><br/>
+(a) −2 in 32 bits = 0xFFFFFFFE. Big: <span class="ans">FF FF FF FE</span>. Little: <span class="ans">FE FF FF FF</span><br/>
+(b) Big endian reads left to right: 0x0000012C = 1·256 + 2·16 + 12 = <span class="ans">300</span></div>
+
+<div class="kq"><span class="kt">5. Moore's Law</span> → <a class="pg" href="#s1-moore"></a><br/>
+18 months = 1.5 years. (a) 3 ÷ 1.5 = 2 doublings → 4× slower → 10 × 4 = <span class="ans">40 s</span>. (b) 4.5 ÷ 1.5 = 3 → 8× faster → 10 ÷ 8 = <span class="ans">1.25 s</span></div>
+
+<div class="kq"><span class="kt">6. Address bits</span> → <a class="pg" href="#s3-addr"></a>, <a class="pg" href="#s4-regs"></a><br/>
+(a) 64K = 2¹⁶ words → <span class="ans">16 bits</span>. (b) 64K × 2 bytes = 128K = 2¹⁷ → <span class="ans">17 bits</span>. (c) PC holds an address. MARIE has 4K = 2¹² words, so 12 bits are enough to address every word.</div>
+
+<div class="kq"><span class="kt">7. MARIE fetch–decode–execute</span> → <a class="pg" href="#s4-fde"></a><br/>
+(a) 20B4 → opcode 2 = <span class="ans">Store 0B4</span><br/>
+(b) MAR ← PC (0A0) · MBR ← M[MAR] (20B4) · IR ← MBR (20B4) · PC ← PC + 1 (0A1)<br/>
+(c) MAR ← IR[11–0] (0B4) · MBR ← AC (0123) · M[MAR] ← MBR. Final: <span class="ans">AC = 0123, M[0B4] = 0123, PC = 0A1</span> (Store doesn't change AC; the old FFFF is overwritten.)</div>
+
+<div class="kq"><span class="kt">8. Assembling and tracing</span> → <a class="pg" href="#s4-asm"></a>, <a class="pg" href="#s4-branch"></a><br/>
+(a) Symbol table: <span class="ans">Diff 106 · Done 107 · X 109 · Y 10A · One 10B · Zero 10C</span><br/>
+(b) <span class="ans">1109 · 410A · 8400 · 9106 · 110B · 9107 · 110C · 6000 · 7000 · 0007 · 0007 · 0001 · 0000</span><br/>
+(c) Load X (7) · Subt Y (0) · Skipcond 400: AC = 0 → skip 103 · Load One (1) · Jump Done · Output <span class="ans">1</span> · Halt<br/>
+(d) Y = 5: AC = 2 ≠ 0 → no skip → Jump Diff · Load Zero · Output <span class="ans">0</span>. The program outputs 1 if X = Y and 0 otherwise.</div>
+
+<div class="kq"><span class="kt">9. Expanding opcodes</span> → <a class="pg" href="#s5-expand"></a><br/>
+Count: 13·2¹² + 40·2⁸ + 50·2⁴ + 16·2⁰ = 53,248 + 10,240 + 800 + 16 = 64,304 ≤ 65,536 → <span class="ans">possible</span><br/>
+Escape: 16 − 13 = 3 left → 3·16 = 48 ≥ 40 → 8 left → 8·16 = 128 ≥ 50 → 78 left → 78·16 = 1,248 ≥ 16 ✓</div>
+
+<div class="kq"><span class="kt">10. Postfix and stack code</span> → <a class="pg" href="#s5-postfix"></a><br/>
+(a) ((A × (B + C)) − (D / E)) → <span class="ans">A B C + × D E / −</span><br/>
+(b) push 6 · push 2 · push 3 · + → 6 5 · × → 30 · push 4 · − → <span class="ans">26</span><br/>
+(c) <span class="ans">PUSH A · PUSH B · ADD · PUSH C · MULT · POP Z</span></div>
+
+<div class="kq"><span class="kt">11. Addressing modes</span> → <a class="pg" href="#s5-modes"></a><br/>
+Immediate <span class="ans">200</span> · direct M[200] = <span class="ans">350</span> · indirect M[M[200]] = M[350] = <span class="ans">410</span> · indexed EA = 200 + 400 = 600 → <span class="ans">725</span></div>
+
+<div class="kq"><span class="kt">12. Pipelining</span> → <a class="pg" href="#s6-pipe"></a>, <a class="pg" href="#s6-haz"></a><br/>
+Non-pipelined = 500 × 90 = 45,000 ns. Pipelined = (6 + 500 − 1) × 15 = 7,575 ns.<br/>
+(a) S = 45,000 ÷ 7,575 = <span class="ans">5.94</span> (b) k = <span class="ans">6</span> (c) (505 + 20) × 15 = 7,875 → S = <span class="ans">5.71</span><br/>
+(d) <span class="ans">Data hazard</span> (SUB needs R1 before ADD has written it). Fix: forwarding/bypassing, or stall.</div>
+
+<div class="kq"><span class="kt">13. CPU time</span> → <a class="pg" href="#s6-cpu"></a><br/>
+A: 2×10⁹ × 1.5 ÷ 3×10⁹ = <span class="ans">1.0 s</span>. B: 2×10⁹ × 1.2 ÷ 2.4×10⁹ = <span class="ans">1.0 s</span>. Speedup = <span class="ans">1</span>. A's faster clock is cancelled by its higher CPI: clock rate alone does not decide performance.</div>
+
+<div class="kq"><span class="kt">14. Cache address fields</span> → <a class="pg" href="#s7-fields"></a><br/>
+(a) 2²⁰ ÷ 2⁵ = <span class="ans">2¹⁵ = 32,768 blocks</span><br/>
+(b) 20-bit address: offset log₂32 = 5, index log₂256 = 8, tag 20 − 8 − 5 = 7 → <span class="ans">Tag 7 | Index 8 | Offset 5</span>.<br/>
+0xABCDE = 1010 1011 1100 1101 1110 → 1010101 | 11100110 | 11110 → <span class="ans">block 230</span> (0xE6), tag 85, offset 30<br/>
+(c) 256 ÷ 4 = 64 sets → set 6 bits, tag 9 → <span class="ans">Tag 9 | Set 6 | Offset 5</span>. 101010111 | 100110 | 11110 → <span class="ans">set 38</span>, tag 343</div>
+
+<div class="kq"><span class="kt">15. Cache tracing</span> → <a class="pg" href="#s7-trace"></a>, <a class="pg" href="#s7-repl"></a><br/>
+(a) Direct: lines (mod 4) 0, 0, 0, 0, 0, 1, 1, 1 → M M M M M M M M → <span class="ans">0 hits</span> (0, 4, 8 keep evicting each other in line 0; 1 and 5 do the same in line 1)<br/>
+(b) 2-way: 2 sets (mod 2). Set 0 gets 0, 4, 8, 0, 4: M M M (evicts 0) M (evicts 4) M (evicts 8). Set 1 gets 1, 5, 1: M M <b>H</b> → <span class="ans">1 hit</span><br/>
+(c) Fully associative: 0 M · 4 M · 8 M · 0 <b>H</b> · 4 <b>H</b> · 1 M (cache full: 0, 4, 8, 1) · 5 M evicts LRU block 8 · 1 <b>H</b> → <span class="ans">3 hits</span><br/>
+More flexibility in placement → fewer conflict misses.</div>
+
+<div class="kq"><span class="kt">16. Effective access time</span> → <a class="pg" href="#s7-hit"></a><br/>
+(a) 0.95 × 5 + 0.05 × 80 = 4.75 + 4 = <span class="ans">8.75 ns</span><br/>
+(b) 6 = 5H + 80(1 − H) = 80 − 75H → H = 74/75 = <span class="ans">0.9867 (98.7%)</span></div>
+
+<div class="kq"><span class="kt">17. Write policies and locality</span> → <a class="pg" href="#s7-write"></a>, <a class="pg" href="#s7-hier"></a><br/>
+(a) Write-through <span class="ans">50</span> writes; write-back <span class="ans">0</span> while cached, 1 when the block is evicted. (b) It marks a block modified in the cache, so it is written back to memory on replacement. (c) <span class="ans">Spatial</span> (neighbouring elements) and <span class="ans">temporal</span> (the sum variable and loop instructions are reused).</div>
+
+<div class="kq"><span class="kt">18. Concepts</span> → <a class="pg" href="#s1-orgarch"></a>, <a class="pg" href="#s1-vn"></a>, <a class="pg" href="#s4-ctrl"></a><br/>
+(a) Registers: <span class="ans">architecture</span>. SRAM cache: <span class="ans">organization</span>. Instruction format: <span class="ans">architecture</span>. Bus clock speed: <span class="ans">organization</span>.<br/>
+(b) Instructions and data share one memory and one CPU–memory path, so they compete for it. Harvard uses separate memories/paths for instructions and data.<br/>
+(c) Hardwired: logic gates, fast, hard to change. Microprogrammed: microcode, flexible, slower.</div>
+
+<div class="kq"><span class="kt">19. Virtual memory</span> → <a class="pg" href="#S8"></a><br/>
+(a) Offset log₂1024 = <span class="ans">10 bits</span>, page number 16 − 10 = <span class="ans">6 bits</span><br/>
+(b) 0x1C3A = 000111 | 0000111010 → page 7, offset 0x03A → frame 2 | 0x03A = <span class="ans">0x083A</span><br/>
+(c) <span class="ans">Page fault</span>: the OS loads the page from disk into a frame, updates the page table, and the access is retried.</div>
+
+<h3>Self-score</h3>
+<table>
+<tr><th>If you missed …</th><th>Do this</th></tr>
+<tr><td>conversions, two's complement, endianness (1–4)</td><td>Redo Tab C and Tab 2, then cheat-sheet Q1, Q2, P1, P2, P10</td></tr>
+<tr><td>MARIE (7–8)</td><td>Re-trace the examples on <a class="pg" href="#s4-fde"></a> and <a class="pg" href="#s4-trace"></a> by hand, then Q4, Q5, P4, P5</td></tr>
+<tr><td>expanding opcodes, postfix, modes (9–11)</td><td>Tab 5 worked examples, then Q6, P6, P12, P14</td></tr>
+<tr><td>pipelines, CPU time (12–13)</td><td>Tab 6, then Q7, P7, P13</td></tr>
+<tr><td>cache (14–17)</td><td>Tab 7 trace tables, then Q8, P8, P11</td></tr>
+<tr><td>theory (18–19)</td><td>Re-read the comparison tables; cheat-sheet box C</td></tr>
+</table>
+</section>

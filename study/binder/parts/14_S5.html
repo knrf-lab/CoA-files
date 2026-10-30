@@ -1,0 +1,160 @@
+<section class="tab" id="S5" data-short="5 · Instruction Set Architectures">
+<div class="tabhead">5 · A closer look at instruction set architectures <span class="sm">(Sessions 4–5, Null Ch. 5)</span></div>
+<p class="links">Cheat sheet: <span class="cs">T7</span> <span class="cs">T13</span> <span class="cs">T14</span> <span class="cs">T12</span> · Used in: Q6, P6, P12, P14</p>
+
+<h3>Design decisions</h3>
+<div class="row"><div class="col">
+<p>An ISA designer balances: how much <b>memory</b> programs take, how <b>complex decoding</b> is, how <b>long</b> instructions are, and how <b>many</b> instructions there are. Short instructions take less memory and are fetched faster, but leave fewer bits for opcodes and operands.</p>
+<ul>
+<li><b>Instruction length</b>: fixed (fast to decode, may waste space) or variable (compact, harder to decode).</li>
+<li><b>Number of operands</b> per instruction: 0, 1, 2 or 3.</li>
+<li><b>Operand location</b>: immediate (in the instruction), register, or memory.</li>
+<li><b>Addressing modes</b> (<a class="pg" href="#s5-modes"></a>) and <b>byte order</b> (<a class="pg" href="#s2-endian"></a>).</li>
+</ul>
+</div><div class="col" id="s5-storage">
+<table>
+<tr><th>Internal storage</th><th>Operands</th><th>Pros / cons</th></tr>
+<tr><td><b>Stack</b></td><td>implicit, on top of a stack (0-address)</td><td>good code density; the stack can be a bottleneck</td></tr>
+<tr><td><b>Accumulator</b></td><td>one operand is always AC (1-address) — MARIE</td><td>very short instructions; lots of memory traffic</td></tr>
+<tr><td><b>General-purpose registers (GPR)</b></td><td>several registers (2- or 3-address)</td><td>registers are fast and easy for compilers; most common today</td></tr>
+</table>
+<p><b>Load/store</b> architecture: only LOAD and STORE touch memory; everything else works on registers (MIPS, ARM).</p>
+</div></div>
+
+<h3 id="s5-ops">0-, 1-, 2- and 3-address instructions</h3>
+<p>The same expression <b>Z = X × Y + W × U</b> on each kind of machine (Null's standard example):</p>
+<div class="row"><div class="col">
+<table class="mono">
+<tr><th>3-address</th><th>2-address</th><th>1-address (AC)</th></tr>
+<tr><td>MULT R1, X, Y</td><td>LOAD R1, X</td><td>LOAD X</td></tr>
+<tr><td>MULT R2, W, U</td><td>MULT R1, Y</td><td>MULT Y</td></tr>
+<tr><td>ADD Z, R1, R2</td><td>LOAD R2, W</td><td>STORE Temp</td></tr>
+<tr><td></td><td>MULT R2, U</td><td>LOAD W</td></tr>
+<tr><td></td><td>ADD R1, R2</td><td>MULT U</td></tr>
+<tr><td></td><td>STORE Z, R1</td><td>ADD Temp</td></tr>
+<tr><td></td><td></td><td>STORE Z</td></tr>
+</table>
+</div><div class="col">
+<div class="formula">
+<b>3-address</b>: OP dest, src1, src2 (dest ← src1 OP src2)<br/>
+<b>2-address</b>: OP dest, src (dest ← dest OP src)<br/>
+<b>1-address</b>: OP X (AC ← AC OP M[X])<br/>
+<b>0-address</b>: PUSH / POP plus OP on the top two stack items<br/>
+Fewer addresses → shorter instructions but <b>more</b> of them.
+</div>
+<div class="ex"><p class="et">Example <span class="src">S4-5 exercise 6</span></p>
+A = (B + C) × (D + E), 3-address:<br/>ADD R1, B, C · ADD R2, D, E · MULT A, R1, R2</div>
+</div></div>
+
+<h3 id="s5-postfix">Postfix (reverse Polish) and stack machines</h3>
+<div class="row"><div class="col">
+<p><b>Infix</b> puts the operator between operands (2 + 3). <b>Postfix (RPN)</b> puts it <b>after</b> (2 3 +). Postfix needs no parentheses and is exactly how a stack machine works.</p>
+<div class="method">▣ <b>METHOD: infix → postfix</b><br/>1. Fully bracket by precedence (× ÷ before + −, left to right).<br/>2. Inside each bracket write: left operand, right operand, operator.<br/>3. Work from the innermost bracket out.</div>
+<div class="ex"><p class="et">Example <span class="src">S4-5 exercise 2</span></p>
+(2 + 3) × 8 / 10 = (((2 + 3) × 8) / 10)<br/>
+→ (2 3 +) → (2 3 + 8 ×) → <span class="ans">2 3 + 8 × 10 /</span></div>
+<div class="ex"><p class="et">Example <span class="src">cheat sheet P14</span></p>
+(A + B) × (C − D) → <span class="ans">A B + C D − ×</span></div>
+</div><div class="col">
+<div class="method">▣ <b>METHOD: evaluate postfix with a stack</b><br/>Read left to right. Operand → push it. Operator → pop two, apply (second-popped OP first-popped), push the result.</div>
+<table class="mono">
+<tr><th>Read</th><th>Stack after</th></tr>
+<tr><td>2</td><td>2</td></tr>
+<tr><td>3</td><td>2 3</td></tr>
+<tr><td>+</td><td>5</td></tr>
+<tr><td>8</td><td>5 8</td></tr>
+<tr><td>×</td><td>40</td></tr>
+<tr><td>10</td><td>40 10</td></tr>
+<tr><td>/</td><td>4</td></tr>
+</table>
+<p>Stack-machine (0-address) code is the same sequence: PUSH 2 · PUSH 3 · ADD · PUSH 8 · MULT · PUSH 10 · DIV.</p>
+</div></div>
+
+<h3 id="s5-expand">Expanding opcodes</h3>
+<div class="row"><div class="col">
+<p>With a fixed instruction length, instructions with <b>more operand bits</b> have <b>fewer opcode bits</b> left. <b>Expanding opcodes</b> give a short opcode to instructions with many operands and longer opcodes to those with few. Unused short opcodes act as <b>escape opcodes</b>: they say "the opcode continues into the next field".</p>
+<div class="formula">
+<b>Prof's method (pattern count)</b><br/>
+An instruction with b operand bits uses <b>2ᵇ bit patterns</b> (one for every operand value).<br/>
+<b>Possible ⇔ Σ (count × 2^(operand bits)) ≤ 2^(instruction bits)</b>
+</div>
+<div class="formula">
+<b>Escape method (constructive check)</b><br/>
+1. First group: opcode bits = instruction bits − its operand bits → 2^(opcode bits) codes. Use what you need.<br/>
+2. Leftover codes × 2^(extra opcode bits) = codes for the next group.<br/>
+3. Repeat. If any group gets fewer codes than it needs → impossible.
+</div>
+</div><div class="col">
+<div class="ex"><p class="et">Worked example <span class="src">quiz Q6, prof's solution</span></p>
+16-bit; 5 instr with three 4-bit operands, 30 with two 5-bit, 50 with one 8-bit.<br/>
+5 × 2⁴ × 2⁴ × 2⁴ = 5 × 2¹² = 20,480<br/>
+30 × 2⁵ × 2⁵ = 30 × 2¹⁰ = 30,720<br/>
+50 × 2⁸ = 12,800<br/>
+Total 64,000 ≤ 2¹⁶ = 65,536 → <span class="ans">possible</span> (1,536 patterns unused)<br/>
+<i>Escape check</i>: 4-bit opcode → 16, use 5 → 11 left. 11 × 2² = 44 ≥ 30 → 14 left. 14 × 2² = 56 ≥ 50 ✓</div>
+<div class="ex"><p class="et">Example <span class="src">S4-5 exercise 3</span></p>
+11-bit, 4-bit address fields; 5 two-address, 45 one-address, 32 zero-address.<br/>
+5·2⁸ + 45·2⁴ + 32 = 1280 + 720 + 32 = 2032 ≤ 2¹¹ = 2048 → <span class="ans">yes</span><br/>
+Escape: 3-bit opcode → 8, use 5 → 3. 3·2⁴ = 48 ≥ 45 → 3. 3·2⁴ = 48 ≥ 32 ✓</div>
+<div class="ex"><p class="et">Example: impossible <span class="src">cheat sheet P6</span></p>
+12-bit, 4-bit fields; 14 two-address, 32 one-address, 16 zero-address.<br/>
+14·2⁸ + 32·2⁴ + 16 = 3584 + 512 + 16 = 4112 &gt; 4096 → <span class="ans">not possible</span>. Escape: 2 left → 32, all used → 0 for zero-address.</div>
+</div></div>
+<div class="ex"><p class="et">Example: designing the encoding (16-bit, 4-bit fields: 15 three-address, 14 two-address, 31 one-address, 16 zero-address)</p>
+<table class="mono">
+<tr><th>Group</th><th>Bit patterns</th><th>Count</th></tr>
+<tr><td>3-address</td><td>0000 R1 R2 R3 … 1110 R1 R2 R3</td><td>15</td></tr>
+<tr><td>2-address</td><td>1111 0000 R1 R2 … 1111 1101 R1 R2</td><td>14</td></tr>
+<tr><td>1-address</td><td>1111 1110 0000 R1 … 1111 1111 1110 R1</td><td>31</td></tr>
+<tr><td>0-address</td><td>1111 1111 1111 0000 … 1111 1111 1111 1111</td><td>16</td></tr>
+</table>
+Check: 15·4096 + 14·256 + 31·16 + 16 = 65,536 = 2¹⁶ exactly; every pattern is used. 1111 is the escape opcode for the first field, 1110/1111 for the second, and so on.</div>
+
+<h3>Instruction types</h3>
+<table>
+<tr><th>Type</th><th>Examples</th></tr>
+<tr><td>Data movement</td><td>LOAD, STORE, MOVE, PUSH, POP</td></tr>
+<tr><td>Arithmetic</td><td>ADD, SUBTRACT, MULTIPLY, DIVIDE, INCREMENT, DECREMENT (integer and floating point)</td></tr>
+<tr><td>Boolean logic / bit manipulation</td><td>AND, OR, XOR, NOT, SHIFT, ROTATE</td></tr>
+<tr><td>Input/output</td><td>INPUT, OUTPUT (memory ↔ devices)</td></tr>
+<tr><td>Transfer of control</td><td>branches (conditional/unconditional), JUMP, procedure CALL/RETURN — MARIE's Skipcond and Jump</td></tr>
+<tr><td>Special purpose</td><td>NOP (no-op), flag control, string processing</td></tr>
+</table>
+
+<h3 id="s5-modes">Addressing modes: where is the operand?</h3>
+<div class="row"><div class="col">
+<table>
+<tr><th>Mode</th><th>Effective address (EA)</th><th>Operand</th></tr>
+<tr><td><b>Immediate</b></td><td>— (value in the instruction)</td><td>the field itself (ADD R1, #5)</td></tr>
+<tr><td><b>Direct</b></td><td>EA = A</td><td>M[A] (LOAD R2, 1000)</td></tr>
+<tr><td><b>Register</b></td><td>— (a register)</td><td>the register (ADD R3, R4)</td></tr>
+<tr><td><b>Indirect</b></td><td>EA = M[A]</td><td>M[M[A]] — two memory reads</td></tr>
+<tr><td><b>Indexed</b></td><td>EA = A + index register</td><td>M[A + R]</td></tr>
+</table>
+<p>Arrays: EA = base + index × element size (element 5 of an array of 4-byte ints at 2000 → 2000 + 20 = 2020).</p>
+<p><b>Direct vs indirect</b> (S4-5 exercise 4): direct gives the operand's address in the instruction; indirect gives the address of a location that <b>holds</b> the operand's address. LOAD 100 direct → loads M[100]. LOAD 100 indirect → if M[100] = 250, loads M[250].</p>
+</div><div class="col">
+<div class="ex"><p class="et">Example (Null's standard figure)</p>
+Instruction "Load 800". Memory: M[800] = 900, M[900] = 1000, M[1000] = 500, M[1600] = 700. Index register R1 = 800.<br/>
+Immediate → <span class="ans">800</span><br/>
+Direct → M[800] = <span class="ans">900</span><br/>
+Indirect → M[M[800]] = M[900] = <span class="ans">1000</span><br/>
+Indexed → EA = 800 + 800 = 1600 → <span class="ans">700</span></div>
+<div class="ex"><p class="et">Example <span class="src">cheat sheet P12</span></p>
+LOAD 300, M[300] = 500, M[500] = 700, M[800] = 900, R1 = 500 → 300 · 500 · 700 · 900</div>
+</div></div>
+
+<h3>Real-world ISAs</h3>
+<table>
+<tr><th></th><th>Intel (x86)</th><th>MIPS</th><th>ARM</th></tr>
+<tr><td>Philosophy</td><td>CISC</td><td>RISC</td><td>RISC, load/store</td></tr>
+<tr><td>Operands</td><td>2-address (up to 3)</td><td>3-address</td><td>3-operand</td></tr>
+<tr><td>Instruction length</td><td>variable, 1–15 bytes</td><td>fixed 32-bit</td><td>fixed 32-bit (16-bit Thumb)</td></tr>
+<tr><td>Byte order</td><td><b>little endian</b></td><td>big (bi-endian)</td><td>bi-endian</td></tr>
+<tr><td>Design goal</td><td>backward compatibility</td><td>simple, fast pipeline</td><td>power efficiency; most widely used 32-bit</td></tr>
+</table>
+
+<div class="check"><p class="ct">Check yourself</p>
+1. A × (B + C) − D / E to postfix · 2. Evaluate 6 2 3 + × 4 − · 3. 16-bit, 4-bit fields: 14 three-address and 30 two-address. Possible? And with 40 two-address? · 4. LOAD 200 with M[200] = 350, M[350] = 410: direct and indirect values?<br/>
+<span class="small">Answers: A B C + × D E / − · 26 · 30: yes (14·4096 + 30·256 = 65,024 ≤ 65,536; 2 escapes × 16 = 32 ≥ 30) · 40: no (14·4096 + 40·256 = 67,584 &gt; 65,536) · 350 and 410</span></div>
+</section>

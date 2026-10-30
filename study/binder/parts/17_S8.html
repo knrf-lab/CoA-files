@@ -1,0 +1,50 @@
+<section class="tab" id="S8" data-short="8 · Virtual Memory">
+<div class="tabhead">8 · Virtual memory and real-world memory systems <span class="sm">(Sessions 6–7, Null Ch. 6)</span></div>
+<p class="links">Cheat sheet: <span class="cs">C</span> · Used in: theory questions (not in the quiz so far)</p>
+
+<h3>Why virtual memory</h3>
+<div class="row"><div class="col">
+<p><b>Virtual memory</b> uses the hard disk as an extension of main memory. Each program gets a large <b>virtual address space</b>, so it can be bigger than the physical RAM, and programmers no longer worry about physical memory limits.</p>
+<p>The most common implementation is <b>paging</b>: virtual memory is cut into fixed-size <b>pages</b>, physical memory into <b>frames</b> of the same size.</p>
+</div><div class="col">
+<table>
+<tr><th>Term</th><th>Meaning</th></tr>
+<tr><td>Virtual address</td><td>the logical address the program uses</td></tr>
+<tr><td>Physical address</td><td>the real location in RAM</td></tr>
+<tr><td>Page table</td><td>a table <b>in main memory</b> mapping virtual page numbers to physical frame numbers (with a valid bit)</td></tr>
+<tr><td>Page fault</td><td>the page is not in main memory; it must be copied from disk</td></tr>
+<tr><td>MMU</td><td>hardware that does the translation</td></tr>
+<tr><td>TLB</td><td>a small cache of recent page-table entries, so most translations skip the page table</td></tr>
+</table>
+</div></div>
+
+<h3>Address translation</h3>
+<div class="row"><div class="col">
+<div class="formula">
+Virtual address = <b>page number | offset</b><br/>
+Offset bits = log₂(page size)<br/>
+Page-number bits = virtual address bits − offset bits<br/>
+Physical address = <b>frame number | same offset</b>
+</div>
+<div class="method">▣ <b>METHOD</b><br/>1. Split the virtual address. 2. Look the page number up (TLB first, then page table). 3. Valid → replace the page number by the frame number, keep the offset. 4. Not valid → <b>page fault</b>: the OS loads the page from disk into a free frame (replacing one if needed), updates the table, and the instruction restarts.</div>
+</div><div class="col">
+<div class="ex"><p class="et">Example</p>
+16-bit virtual addresses, 4 KB (2¹²) pages → offset 12 bits, page number 4 bits.<br/>
+VA 0x3A7F → page <b>3</b>, offset <b>A7F</b>.<br/>
+Page table: page 3 → frame 5 (valid).<br/>
+PA = frame 5 | A7F = <span class="ans">0x5A7F</span><br/>
+If page 3 were marked invalid → page fault.</div>
+<div class="tip">✔ Same idea as cache fields: the low bits (offset) pass through unchanged; only the high bits are translated.</div>
+</div></div>
+
+<h3>Real-world memory management</h3>
+<div class="row"><div class="col">
+<p><b>Intel Core i9</b>: three cache levels. L1 is split into an instruction cache and a data cache, each with its own TLB. L1 is 8-way, L2 16-way, L3 11-way set associative.</p>
+</div><div class="col">
+<p><b>MIPS</b>: an on-chip MMU maps virtual to physical addresses; caches are initialized by boot code; the TLB is managed by software; supports both big- and little-endian.</p>
+</div></div>
+
+<div class="check"><p class="ct">Check yourself</p>
+1. 1 KB pages and 16-bit virtual addresses: how many pages? · 2. Where is the page table stored? · 3. What is a TLB a cache of? · 4. VA 0x3A7F, page 3 → frame 9: physical address?<br/>
+<span class="small">Answers: 2⁶ = 64 (offset 10 bits) · main memory · page-table entries · 0x9A7F</span></div>
+</section>

@@ -1,0 +1,112 @@
+<section class="tab" id="S1" data-short="1 · Introduction">
+<div class="tabhead">1 · Introduction <span class="sm">(Session 1, Null Ch. 1)</span></div>
+<p class="links">Cheat sheet: <span class="cs">T3</span> <span class="cs">C</span> · Used in: Q3, P3 and short-answer theory questions</p>
+
+<h3 id="s1-orgarch">Organization vs architecture <span class="id">(organisasi vs arsitektur)</span></h3>
+<div class="row"><div class="col">
+<div class="formula">
+<b>Computer architecture</b> = the logical, programmer-visible design: the instruction set, opcodes, data types, number and size of registers, addressing modes. It answers <i>"How do I design a computer?"</i><br/><br/>
+<b>Computer organization</b> = how that design is physically built: control signals, buses, memory technology, the datapath. It answers <i>"How does a computer work?"</i>
+</div>
+</div><div class="col">
+<div class="method">▣ <b>METHOD</b> Ask: <b>"Would a programmer writing assembly code notice it?"</b> Yes → architecture. No (only an engineer building it would) → organization.</div>
+<div class="ex"><p class="et">Example (the classic textbook case)</p>
+"Does the CPU have a multiply instruction?" → programmer sees it → <b>architecture</b>.<br/>
+"Is multiply done by a dedicated multiplier circuit or by repeated addition?" → invisible to the programmer → <b>organization</b>.<br/>
+"How many registers?" → architecture. "Is the cache made of SRAM?" → organization.</div>
+</div></div>
+
+<h3>The three core components and HW/SW equivalence</h3>
+<div class="row"><div class="col">
+<p>Every computer has: (1) a <b>processor (CPU)</b> to interpret and execute programs, (2) a <b>memory</b> to store both data and programs, (3) an <b>I/O system</b> to move data to and from the outside world.</p>
+<p><b>Principle of equivalence of hardware and software</b>: anything done in software can be done in hardware, and anything done in hardware can be done in software. Hardware is almost always <b>faster</b>; software is more <b>flexible</b> (easy to change). Designers choose based on this speed-vs-flexibility trade-off.</p>
+</div><div class="col">
+<div class="ex"><p class="et">Example: reading a computer ad (slides S1 #8)</p>
+"<b>4.20 GHz</b>" → CPU clock rate, 4.2 × 10⁹ cycles/s, so one cycle ≈ 0.238 ns (<a class="pg" href="#s3-clock"></a>).<br/>
+"<b>32GB DDR4 SDRAM</b>" → main memory: 32 × 2³⁰ bytes of dynamic RAM (<a class="pg" href="#s7-types"></a>).<br/>
+"<b>128KB L1 cache</b>" → the small fast memory closest to the CPU (<a class="pg" href="#S7"></a>).</div>
+</div></div>
+<p><b>Standards organizations</b> let equipment from different makers work together: <b>IEEE</b> (components, signalling, data representation, e.g. floating point) and <b>ISO</b> (international). Some are informal trade groups.</p>
+
+<h3 id="s1-gen">Generations and Moore's Law</h3>
+<div class="row"><div class="col">
+<table>
+<tr><th>Generation</th><th>Years</th><th>Technology</th></tr>
+<tr><td>1st</td><td>1945–1953</td><td>Vacuum tubes (ENIAC)</td></tr>
+<tr><td>2nd</td><td>1954–1965</td><td>Transistors</td></tr>
+<tr><td>3rd</td><td>1965–1980</td><td>Integrated circuits (IC)</td></tr>
+<tr><td>4th</td><td>1980–</td><td>VLSI (very-large-scale integration)</td></tr>
+</table>
+<p>The two driving factors behind all of this: <b>cost</b> and <b>performance</b> (S1 exercise 1).</p>
+</div><div class="col">
+<div class="formula" id="s1-moore">
+<b>Moore's Law</b>: the number of transistors on a chip doubles about every <b>18–24 months</b> (≈ 2 years). It is an observation, not a law of physics, and transistor count is not the same as performance.<br/>
+If performance doubles every <b>d</b> years:<br/>
+<b>Performance factor = 2^(years ÷ d)</b><br/>
+Execution time ∝ 1 ÷ performance.
+</div>
+</div></div>
+<div class="row"><div class="col">
+<div class="ex"><p class="et">Example: older processor <span class="src">quiz Q3, prof's solution</span></p>
+200 s now; performance doubles every 2 years; processor 4 years <b>older</b>.<br/>
+1. Doublings = 4 ÷ 2 = 2.<br/>
+2. Factor = 2² = 4. The older CPU is 4× <b>slower</b>.<br/>
+3. Time = 200 × 4 = <span class="ans">800 s</span></div>
+</div><div class="col">
+<div class="ex"><p class="et">Example: newer processor <span class="src">cheat sheet P3</span></p>
+60 s now; doubling every 1.5 years; processor 6 years <b>newer</b>.<br/>
+1. Doublings = 6 ÷ 1.5 = 4.<br/>
+2. Factor = 2⁴ = 16. Newer → 16× <b>faster</b>.<br/>
+3. Time = 60 ÷ 16 = <span class="ans">3.75 s</span></div>
+</div></div>
+<div class="trap">⚠ <b>TRAP</b> Older → slower → time gets <b>bigger</b> (multiply). Newer → faster → time gets <b>smaller</b> (divide). Write "older = slower" next to your working so you don't flip it.</div>
+<p><b>Why Moore's Law can't last forever</b> (S1 exercise 3): transistors cannot shrink below the size of atoms; smaller, denser chips produce more heat and power per area; quantum effects make tiny transistors unreliable; and the cost of each new fabrication plant keeps rising (Rock's Law). Growth has already slowed.</p>
+
+<h3 id="s1-levels">The computer level hierarchy</h3>
+<div class="row"><div class="col">
+<table>
+<tr><th>Level</th><th>Name</th><th>What lives there</th></tr>
+<tr><td>6</td><td>User</td><td>Running programs (apps)</td></tr>
+<tr><td>5</td><td>High-level language</td><td>C, Java, Python</td></tr>
+<tr><td>4</td><td>Assembly language</td><td>Mnemonics, e.g. MARIE "Load X"</td></tr>
+<tr><td>3</td><td>System software</td><td>Operating system</td></tr>
+<tr><td>2</td><td>Machine (ISA)</td><td>Binary machine instructions</td></tr>
+<tr><td>1</td><td>Control</td><td>Microcode or hardwired control unit</td></tr>
+<tr><td>0</td><td>Digital logic</td><td>Gates, wires, circuits</td></tr>
+</table>
+</div><div class="col">
+<p>Each level is a "virtual machine" with its own language. <b>Abstraction</b> lets you work at one level without knowing every detail below it. The hierarchy bridges the <b>semantic gap</b> between high-level languages and logic gates.</p>
+<p>This course lives mostly at levels 1–2 (MARIE's machine code and control) and the memory hardware under them.</p>
+</div></div>
+
+<h3 id="s1-cloud">Cloud computing, the Internet, IoT</h3>
+<div class="row"><div class="col">
+<table>
+<tr><th>Service</th><th>You get</th><th>Example</th></tr>
+<tr><td><b>SaaS</b></td><td>A finished application</td><td>Gmail</td></tr>
+<tr><td><b>PaaS</b></td><td>A platform (OS, database) to build your own apps on</td><td>app-hosting platforms</td></tr>
+<tr><td><b>IaaS</b></td><td>Raw hardware: servers, storage, network</td><td>rented virtual servers</td></tr>
+</table>
+</div><div class="col">
+<p>Each service matches a level of the hierarchy: SaaS ≈ user level, PaaS ≈ system software, IaaS ≈ machine level.</p>
+<p><b>SCADA</b> networks run infrastructure (power, water). The <b>Internet of Things (IoT)</b> is the larger set of connected devices (appliances, security systems). The Internet is robust but <b>fragile</b>: an outage or attack can have serious consequences.</p>
+</div></div>
+
+<h3 id="s1-vn">The von Neumann model and beyond</h3>
+<div class="row"><div class="col">
+<div class="formula">
+<b>Von Neumann architecture</b> (almost every general-purpose computer):<br/>
+• <b>Stored-program concept</b>: instructions and data are stored in the <b>same</b> memory.<br/>
+• Three hardware systems: CPU (with ALU, registers, control unit), main memory, I/O.<br/>
+• Instructions are executed <b>sequentially</b> through the fetch–decode–execute cycle (<a class="pg" href="#s4-fde"></a>).<br/>
+• A <b>single path</b> between CPU and memory: the <b>von Neumann bottleneck</b>, because instructions and data compete for it.
+</div>
+</div><div class="col">
+<p><b>Purpose of the processing unit</b> (S1 exercise 2): it fetches instructions from memory, decodes them, and executes them. The ALU does the arithmetic and logic; the control unit directs the flow of data and instructions.</p>
+<p><b>Non-von Neumann</b> designs break one of those rules. The <b>Harvard architecture</b> has <b>separate</b> memories/buses for instructions and data, which removes the shared-path bottleneck. <b>Parallel processing</b> (many cores or many computers working at once) is the most popular non-von Neumann approach.</p>
+</div></div>
+
+<div class="check"><p class="ct">Check yourself</p>
+1. "MARIE has 16-bit instructions" — architecture or organization? · 2. Name the von Neumann bottleneck. · 3. 120 s now, doubling every 2 years: time on a CPU 6 years newer? · 4. Which level holds the operating system? · 5. Give two reasons Moore's Law must end.<br/>
+<span class="small">Answers: architecture (visible to the programmer) · the single shared CPU–memory path · 2³ = 8 → 15 s · level 3 · atomic size limit, heat/power density, quantum effects, fab cost</span></div>
+</section>

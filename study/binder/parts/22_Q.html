@@ -1,0 +1,54 @@
+<section class="tab" id="Q" data-short="Q · Practice Quiz">
+<div class="tabhead">Q · Practice quiz: Computer Organization &amp; Architecture</div>
+<div class="formula"><b>Rules</b>: open binder, <b>do not look at Tab K until you finish</b>. Suggested time 120 minutes for all 19 questions, or about 60 minutes for any 10. Topics are mixed on purpose, so part of the task is choosing the method (Tab I). These questions are <b>new</b>: none of them are on the cheat sheet. Show the formula, the substitution and the answer, as in the prof's quiz solutions.</div>
+
+<div class="qq"><span class="pts">[5]</span><span class="qn">1.</span> (a) Convert 0x3C7 to binary and to decimal. (b) Convert 200 to 8-bit binary and to hex. (c) Compute 0x2A + 0x3C in hex.</div>
+
+<div class="qq"><span class="pts">[6]</span><span class="qn">2.</span> (a) The 16-bit pattern 0xFFD6 is read as an unsigned integer and as a two's-complement integer. Give both values. (b) Write −100 in 8-bit two's complement (binary and hex). (c) What is the range of a 12-bit two's-complement integer?</div>
+
+<div class="qq"><span class="pts">[5]</span><span class="qn">3.</span> (a) The string "HI" is packed into one 16-bit word ('H' = 0x48, 'I' = 0x49). Write the word in hex and binary. Read as two's complement, is it positive or negative? (b) For the 32-bit value 0x12AB34CD, give the most significant byte, the least significant byte, and the 16-bit code formed by the two middle bytes.</div>
+
+<div class="qq"><span class="pts">[5]</span><span class="qn">4.</span> (a) The 32-bit integer −2 is stored at address 0x100. Show the bytes at 0x100–0x103 on a big-endian and on a little-endian machine. (b) A big-endian machine holds 00 00 01 2C at addresses 0x200–0x203. What decimal value is stored there?</div>
+
+<div class="qq"><span class="pts">[4]</span><span class="qn">5.</span> A program runs in 10 s on today's processor. Performance doubles every 18 months. How long does it take on a processor (a) 3 years older, (b) 4.5 years newer?</div>
+
+<div class="qq"><span class="pts">[4]</span><span class="qn">6.</span> A memory is organized as 64K × 16. How many address bits are needed if it is (a) word-addressable, (b) byte-addressable? (c) Explain why MARIE's PC is 12 bits wide.</div>
+
+<div class="qq"><span class="pts">[7]</span><span class="qn">7.</span> A MARIE computer has PC = 0A0, M[0A0] = 20B4, M[0B4] = FFFF and AC = 0123 (all hex). (a) Decode the instruction. (b) Show the fetch-cycle register transfers. (c) Show the execute-cycle transfers and give the final AC, M[0B4] and PC.</div>
+
+<div class="qq"><span class="pts">[8]</span><span class="qn">8.</span> Consider the MARIE program:
+<table class="mono">
+<tr><td>100</td><td></td><td>LOAD X</td><td>107</td><td>Done,</td><td>OUTPUT</td></tr>
+<tr><td>101</td><td></td><td>SUBT Y</td><td>108</td><td></td><td>HALT</td></tr>
+<tr><td>102</td><td></td><td>SKIPCOND 400</td><td>109</td><td>X,</td><td>DEC 7</td></tr>
+<tr><td>103</td><td></td><td>JUMP Diff</td><td>10A</td><td>Y,</td><td>DEC 7</td></tr>
+<tr><td>104</td><td></td><td>LOAD One</td><td>10B</td><td>One,</td><td>DEC 1</td></tr>
+<tr><td>105</td><td></td><td>JUMP Done</td><td>10C</td><td>Zero,</td><td>DEC 0</td></tr>
+<tr><td>106</td><td>Diff,</td><td>LOAD Zero</td><td></td><td></td><td></td></tr>
+</table>
+(a) Build the symbol table. (b) Give the hex code for addresses 100–10C. (c) Trace the program and give the output. (d) What is the output if Y is DEC 5 instead? What does the program do?</div>
+
+<div class="qq"><span class="pts">[6]</span><span class="qn">9.</span> A computer has 16-bit instructions and 4-bit address fields. Is it possible to encode, using expanding opcodes, 13 three-address, 40 two-address, 50 one-address and 16 zero-address instructions? Prove it by counting bit patterns, then confirm with the escape-opcode method.</div>
+
+<div class="qq"><span class="pts">[5]</span><span class="qn">10.</span> (a) Convert A × (B + C) − D / E to postfix. (b) Evaluate the postfix expression 6 2 3 + × 4 −, showing the stack. (c) Write stack-machine (0-address) code for Z = (A + B) × C.</div>
+
+<div class="qq"><span class="pts">[4]</span><span class="qn">11.</span> The instruction is LOAD 200. Memory holds M[200] = 350, M[350] = 410, M[600] = 725, and the index register R1 = 400. What value is loaded with immediate, direct, indirect and indexed addressing?</div>
+
+<div class="qq"><span class="pts">[6]</span><span class="qn">12.</span> A non-pipelined processor takes 90 ns per instruction. A 6-stage pipeline with a 15 ns clock runs the same 500 instructions. (a) Speedup? (b) Maximum possible speedup? (c) Speedup if hazards add 20 stall cycles? (d) Name the hazard caused by "ADD R1, R2, R3" followed by "SUB R4, R1, R5" and one fix.</div>
+
+<div class="qq"><span class="pts">[4]</span><span class="qn">13.</span> A program executes 2 × 10⁹ instructions. CPU A has CPI 1.5 at 3 GHz; CPU B has CPI 1.2 at 2.4 GHz. Compute both CPU times and the speedup of A over B. What does this show about clock rate?</div>
+
+<div class="qq"><span class="pts">[7]</span><span class="qn">14.</span> A byte-addressable memory has 2²⁰ bytes. The cache has 256 blocks of 32 bytes. (a) How many blocks of main memory are there? (b) Direct mapped: give the address format and the cache block of address 0xABCDE. (c) 4-way set associative: give the address format and the set of 0xABCDE.</div>
+
+<div class="qq"><span class="pts">[6]</span><span class="qn">15.</span> A cache has 4 blocks. The block references are 0, 4, 8, 0, 4, 1, 5, 1. Show hit/miss for each and the number of hits if the cache is (a) direct mapped, (b) 2-way set associative with LRU, (c) fully associative with LRU. Explain the difference.</div>
+
+<div class="qq"><span class="pts">[4]</span><span class="qn">16.</span> Cache access time is 5 ns and main memory access time is 80 ns. (a) Effective access time at a 95% hit rate? (b) What hit rate gives an effective access time of 6 ns?</div>
+
+<div class="qq"><span class="pts">[5]</span><span class="qn">17.</span> (a) A program updates the same variable 50 times while it stays in the cache. How many main-memory writes happen under write-through and under write-back? (b) What is the dirty bit for? (c) A loop sums the elements of an array. Which kinds of locality does it show?</div>
+
+<div class="qq"><span class="pts">[5]</span><span class="qn">18.</span> (a) Classify as architecture or organization: the number of registers; whether the cache uses SRAM; the instruction format; the bus clock speed. (b) What is the von Neumann bottleneck, and how does the Harvard architecture avoid it? (c) Compare hardwired and microprogrammed control.</div>
+
+<div class="qq"><span class="pts">[4]</span><span class="qn">19.</span> A system has 16-bit virtual addresses and 1 KB pages. (a) How many bits are the page number and offset? (b) Virtual address 0x1C3A is on a page mapped to frame 2. What is the physical address? (c) What happens if the page-table entry is marked invalid?</div>
+
+<p style="text-align:center"><b>— End —</b> Total 100 points. Now mark your work with Tab K.</p>
+</section>

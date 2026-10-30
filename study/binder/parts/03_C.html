@@ -1,0 +1,91 @@
+<section class="tab" id="C" data-short="C · Calculation Toolkit">
+<div class="tabhead">C · Calculation toolkit: doing the arithmetic by hand</div>
+<p class="links">Cheat sheet: <span class="cs">T1</span> <span class="cs">T9</span> <span class="cs">T10</span> · Used in: Q1, Q2, Q4, Q5, Q8, P1, P2, P8, P9</p>
+<p>Almost every CoA calculation is one of five moves: a power of 2, a base conversion, hex addition/subtraction, splitting a bit string, or a "divide by 2ᵏ". Learn these once and the rest of the binder is easy.</p>
+
+<h3 id="c-pow">1 · Powers of 2 you must know by heart</h3>
+<div class="row"><div class="col">
+<table>
+<tr><th>2ⁿ</th><th>value</th><th>2ⁿ</th><th>value</th></tr>
+<tr><td>2⁰</td><td>1</td><td>2⁸</td><td>256</td></tr>
+<tr><td>2¹</td><td>2</td><td>2⁹</td><td>512</td></tr>
+<tr><td>2²</td><td>4</td><td>2¹⁰</td><td>1,024 = 1K</td></tr>
+<tr><td>2³</td><td>8</td><td>2¹¹</td><td>2,048 = 2K</td></tr>
+<tr><td>2⁴</td><td>16</td><td>2¹²</td><td>4,096 = 4K</td></tr>
+<tr><td>2⁵</td><td>32</td><td>2¹⁶</td><td>65,536 = 64K</td></tr>
+<tr><td>2⁶</td><td>64</td><td>2²⁰</td><td>1,048,576 = 1M</td></tr>
+<tr><td>2⁷</td><td>128</td><td>2³⁰</td><td>≈ 1.07 × 10⁹ = 1G</td></tr>
+</table>
+</div><div class="col">
+<div class="formula">
+<b>Prefix rule:</b> K = 2¹⁰, M = 2²⁰, G = 2³⁰ (for memory sizes).<br/>
+So 4M = 2² × 2²⁰ = 2²², 16K = 2⁴ × 2¹⁰ = 2¹⁴, 8M = 2²³, 2M = 2²¹.<br/>
+<b>log₂ of a power of 2</b> is just the exponent: log₂(1024) = 10, log₂(16) = 4.<br/>
+<b>Multiplying powers</b>: add exponents. 2⁴ × 2⁸ = 2¹². <b>Dividing</b>: subtract. 2²⁴ ÷ 2⁴ = 2²⁰.
+</div>
+<div class="trap">⚠ <b>TRAP</b> For <b>speed</b> (GHz, MHz) and <b>time</b> (ns), the prefixes are decimal: 1 GHz = 10⁹ Hz, 1 ns = 10⁻⁹ s. Only memory sizes use powers of 2.</div>
+</div></div>
+
+<h3 id="c-conv">2 · Base conversions by hand</h3>
+<div class="row"><div class="col">
+<div class="formula">
+<b>Binary → decimal</b>: add the place values of the 1-bits.<br/>
+Place values: … 128 64 32 16 8 4 2 1<br/>
+1100 1000₂ = 128 + 64 + 8 = <b>200</b><br/><br/>
+<b>Decimal → binary</b>: subtract the largest power of 2 that fits, repeat.<br/>
+200 − 128 = 72 − 64 = 8 − 8 = 0 → bits 128, 64, 8 → <b>1100 1000</b><br/><br/>
+<b>Hex → decimal</b>: digits × powers of 16 (1, 16, 256, 4096).<br/>
+0x3C7 = 3·256 + 12·16 + 7 = 768 + 192 + 7 = <b>967</b><br/><br/>
+<b>Decimal → hex</b>: divide by 16, keep remainders (read upward).<br/>
+200 ÷ 16 = 12 r 8 → C8. 60 ÷ 16 = 3 r 12 → <b>3C</b>
+</div>
+</div><div class="col">
+<div class="formula">
+<b>Hex ↔ binary</b> is the one you use most: each hex digit is exactly 4 bits.<br/>
+0x3C7 → 3 = 0011, C = 1100, 7 = 0111 → <b>0011 1100 0111</b><br/>
+1011 0110₂ → 1011 = B, 0110 = 6 → <b>0xB6</b><br/>
+Group from the <b>right</b>; pad the left group with 0s.<br/>
+1 0110 1101 → 0001 0110 1101 → 0x16D
+</div>
+<div class="tip">✔ Learn the 16 rows in Tab T (<a class="pg" href="#t-hex"></a>) until you can write them without thinking. A, C and F (1010, 1100, 1111) come up constantly.</div>
+</div></div>
+
+<h3 id="c-hexarith">3 · Hex addition and subtraction (MARIE's AC works in hex)</h3>
+<div class="row"><div class="col">
+<div class="formula">
+Work digit by digit from the right, like decimal, but carry/borrow at <b>16</b>.<br/>
+<b>Add</b>: 0x2A + 0x3C: A + C = 10 + 12 = 22 = 16 + 6 → write 6, carry 1. 2 + 3 + 1 = 6 → <b>0x66</b> (= 42 + 60 = 102 ✓)<br/>
+<b>Subtract</b>: 0x0035 − 0x0010 = <b>0x0025</b> (no borrow needed).<br/>
+0x0100 − 0x0001: 0 − 1 needs a borrow: 16 − 1 = F, then borrow again → <b>0x00FF</b>.
+</div>
+</div><div class="col">
+<div class="ex"><p class="et">Example (quiz Q4)</p>
+AC = 0035, M[155] = 0010, instruction Subt 155. AC ← 0035 − 0010 = <b>0025</b> (hex).<br/>
+In decimal that is 53 − 16 = 37, and 0x25 = 37 ✓. Give the answer in hex, the way the prof does, and add the decimal if you like.</div>
+<div class="trap">⚠ <b>TRAP</b> When a MARIE value is written as hex (0035), do the arithmetic in hex. 0035 − 0010 is 0025 hex, not 25 decimal.</div>
+</div></div>
+
+<h3 id="c-shift">4 · The "drop bits / keep bits" trick (dividing by 2ᵏ)</h3>
+<div class="row"><div class="col">
+<div class="formula">
+For any binary number:<br/>
+<b>⌊x ÷ 2ᵏ⌋</b> = drop the lowest k bits.<br/>
+<b>x mod 2ᵏ</b> = keep only the lowest k bits.<br/>
+In hex, each hex digit is 4 bits, so ÷16 = drop the last hex digit, mod 16 = keep the last hex digit.<br/>
+0x5A3C8F ÷ 16 → 0x5A3C8 · 0x5A3C8F mod 16 → 0xF
+</div>
+</div><div class="col">
+<div class="tip">✔ This is exactly how cache mapping works (<a class="pg" href="#s7-map"></a>): the block number is "address ÷ block size" (drop the offset bits), and the cache line is "block mod lines" (keep the index bits). You never need long division.</div>
+</div></div>
+
+<h3 id="c-split">5 · Splitting a bit string into fields</h3>
+<div class="ex"><p class="et">Example: split 24 bits as Tag 10 | Index 10 | Offset 4 <span class="src">quiz Q8</span></p>
+0x5A3C8F → 0101 1010 0011 1100 1000 1111 (24 bits)<br/>
+Count from the <b>right</b>: offset = last 4 bits <b>1111</b>; index = next 10 bits <b>11 1100 1000</b>; tag = the 10 bits left <b>0101 1010 00</b>.<br/>
+Index → decimal: 11 1100 1000 = 512 + 256 + 128 + 64 + 8 = <b>968</b>. In hex: regroup from the right, 11 1100 1000 = 0x3C8.</div>
+<div class="tip">✔ Always count field widths from the right (low bits). The left-most field gets whatever is left, and it may not be a multiple of 4.</div>
+
+<div class="check"><p class="ct">Check yourself</p>
+1. 2¹⁶ ÷ 2³ = ? · 2. 0xC8 in decimal? · 3. 0x00FF + 0x0001? · 4. 0xBEEF mod 8? · 5. 13 in 4-bit binary?<br/>
+<span class="small">Answers: 2¹³ = 8192 · 200 · 0x0100 · 7 (last 3 bits of F = 1111 are 111) · 1101</span></div>
+</section>

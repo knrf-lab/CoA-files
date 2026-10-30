@@ -1,0 +1,44 @@
+<section class="tab" id="X" data-short="X · Traps &amp; Errata">
+<div class="tabhead">X · Traps and errata</div>
+
+<h3>Mistakes and inconsistencies in the course materials (do not copy these)</h3>
+<table>
+<tr><th>Where</th><th>Material says</th><th>Correct</th></tr>
+<tr><td>S4-5 #16 table</td><td>Intel: "Big-endian (historically little-endian)"</td><td>Intel x86 is <b>little endian</b>. The S4-5 #6 and #15 text slides agree. <a class="pg" href="#s2-endian"></a></td></tr>
+<tr><td>S4-5 #16 table</td><td>MIPS and ARM: "Big-endian"</td><td>Both are <b>bi-endian</b> (S6-7 #19 says so for MIPS). If asked, say "big endian (bi-endian capable)".</td></tr>
+<tr><td>S6-7 #10 cache diagram</td><td>labels "Dasta", "Vesta", "Sipeed"</td><td>Garbled image text. Read it as: CPU ↔ cache (faster) ↔ main memory/RAM (slower) over the system bus.</td></tr>
+<tr><td>S1 #12 vs Study Guide p.1</td><td>"18–24 months" vs "about every two years"</td><td>Same law, different wording. In a calculation, use the period the question gives.</td></tr>
+<tr><td>S4-5 #8</td><td>"Instruction Formats" slide has only the escape-opcode idea</td><td>The counting method the prof uses in Q6 is on <a class="pg" href="#s5-expand"></a>.</td></tr>
+<tr><td>S6-7 #14 and #16</td><td>Write-policy slide appears twice</td><td>Harmless duplicate. Content on <a class="pg" href="#s7-write"></a>.</td></tr>
+</table>
+
+<h3>Exam traps</h3>
+<div class="row"><div class="col">
+<ul>
+<li><b>MSB = bit or byte?</b> Q1 means byte, Q2 means bit. Read the sentence.</li>
+<li><b>Older vs newer</b> (Moore): older → multiply the time, newer → divide.</li>
+<li><b>Address vs contents</b>: X is an address, M[X] is what's stored there.</li>
+<li><b>Hex arithmetic in MARIE</b>: 0035 − 0010 = 0025 <i>hex</i>, which is 37 decimal.</li>
+<li><b>DEC vs HEX directives</b>: "DEC 60" is stored as 003C; "HEX 60" is 0060.</li>
+<li><b>No-operand instructions</b> get address 000: Output = 6000, Halt = 7000.</li>
+<li><b>Skipcond codes</b>: 000 → AC &lt; 0, 400 → AC = 0, 800 → AC &gt; 0. It skips the <b>next</b> line only.</li>
+<li><b>PC during execute</b> already points to the next instruction.</li>
+<li><b>Fetch has 4 transfers</b>: don't forget PC ← PC + 1, and don't skip the MBR.</li>
+<li><b>Execute starts with MAR ← IR[11–0]</b> (the prof's form), not MAR ← X, once the instruction is in IR.</li>
+</ul>
+</div><div class="col">
+<ul>
+<li><b>Pipeline formula</b> is (k + n − 1)·τ, not k·n·τ. The non-pipelined time uses t<sub>n</sub> = k·τ.</li>
+<li><b>Expanding opcodes</b>: multiply each count by 2^(<b>total</b> operand bits) (three 4-bit operands = 2¹²).</li>
+<li><b>4M × 16 byte-addressable</b>: × 2 bytes per word → 8M → 23 bits.</li>
+<li><b>Cache fields are split from the right</b>; the tag is whatever is left.</li>
+<li><b>Set-associative index</b> = log₂(<b>sets</b>), sets = lines ÷ N.</li>
+<li><b>Direct mapped has no replacement policy</b>: the line is fixed.</li>
+<li><b>FIFO ignores hits</b>; LRU refreshes on every hit.</li>
+<li><b>Write-back</b> uses the dirty bit; write-through doesn't need one.</li>
+<li><b>Two's complement sign</b>: a hex first digit 8–F means negative (16-bit).</li>
+<li><b>Endianness</b>: pad 0x1234 to 00001234 before storing it as 32-bit.</li>
+<li><b>K/M/G</b> are powers of 2 for memory, powers of 10 for Hz and seconds.</li>
+</ul>
+</div></div>
+</section>

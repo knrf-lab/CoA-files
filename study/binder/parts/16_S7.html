@@ -1,0 +1,184 @@
+<section class="tab" id="S7" data-short="7 · Memory &amp; Cache">
+<div class="tabhead">7 · Memory and cache <span class="sm">(Sessions 6–7, Null Ch. 6)</span></div>
+<p class="links">Cheat sheet: <span class="cs">T9</span> <span class="cs">T10</span> <span class="cs">T11</span> <span class="cs">C</span> · Used in: Q8, P8, P11 and theory questions</p>
+
+<h3 id="s7-types">Memory basics and types</h3>
+<div class="row"><div class="col">
+<ul>
+<li><b>Latency</b>: time for one memory access to complete.</li>
+<li><b>Bandwidth</b>: bits/bytes transferred per second.</li>
+<li><b>Static</b> memory keeps its state while power is on; <b>dynamic</b> memory must be refreshed constantly.</li>
+<li><b>Volatile</b> memory loses its contents when power is off (RAM); <b>nonvolatile</b> keeps them (ROM, flash, disk).</li>
+<li><b>RAM</b>: every cell has an address and can be accessed in any order in the same time (vs sequential-access memory like tape).</li>
+</ul>
+</div><div class="col">
+<table>
+<tr><th></th><th>SRAM</th><th>DRAM</th></tr>
+<tr><td>Stores a bit in</td><td>a flip-flop</td><td>a capacitor</td></tr>
+<tr><td>Refresh</td><td>not needed</td><td>needed periodically</td></tr>
+<tr><td>Speed</td><td>faster</td><td>slower</td></tr>
+<tr><td>Cost per bit</td><td>higher</td><td>lower</td></tr>
+<tr><td>Used for</td><td><b>cache</b></td><td><b>main memory</b></td></tr>
+</table>
+</div></div>
+
+<h3 id="s7-hier">The memory hierarchy and locality</h3>
+<div class="row"><div class="col">
+<p><b>Registers → Cache → Main memory → Secondary storage (disk)</b></p>
+<table>
+<tr><th>Going down the hierarchy</th><th>Trend</th></tr>
+<tr><td>Capacity</td><td>increases</td></tr>
+<tr><td>Cost per bit</td><td>decreases</td></tr>
+<tr><td>Latency (access time)</td><td>increases</td></tr>
+<tr><td>Speed</td><td>decreases</td></tr>
+</table>
+<p><b>Goal</b> (S6-7 exercise 1): give the speed of the fastest memory at roughly the cost per bit of the cheapest, by keeping the data the CPU needs right now in the small, fast levels.</p>
+</div><div class="col">
+<div class="formula">
+<b>Temporal locality</b>: data used recently will probably be used again soon.<br/>
+<i>e.g. a loop counter, the instructions inside a loop.</i><br/>
+<b>Spatial locality</b>: data near a recently used address will probably be used soon.<br/>
+<i>e.g. walking through an array, sequential instructions.</i>
+</div>
+<p>Caches exploit both: they keep recently used blocks (temporal) and load a whole <b>block</b> of neighbouring bytes on each miss (spatial).</p>
+</div></div>
+
+<h3 id="s7-hit">Cache hits, misses and access time</h3>
+<div class="row"><div class="col">
+<p>The CPU checks the cache first. Found → <b>hit</b>. Not found → <b>miss</b>: the whole block is copied from main memory into the cache, then used.</p>
+<div class="formula">
+<b>Hit rate H = hits ÷ total accesses</b> · miss rate = 1 − H<br/>
+<b>Effective access time EAT = H × t<sub>cache</sub> + (1 − H) × t<sub>memory</sub></b>
+</div>
+</div><div class="col">
+<div class="ex"><p class="et">Example</p>
+Cache 10 ns, main memory 200 ns, hit rate 99%.<br/>
+EAT = 0.99 × 10 + 0.01 × 200 = 9.9 + 2 = <span class="ans">11.9 ns</span> — nearly cache speed with a 99% hit rate.</div>
+</div></div>
+
+<h3 id="s7-map">The three mapping schemes</h3>
+<table>
+<tr><th>Scheme</th><th>Where can a memory block go?</th><th>Address fields</th><th>Pros / cons</th></tr>
+<tr><td><b>Direct mapped</b></td><td>exactly <b>one</b> line: line = block mod (# lines)</td><td>Tag | Index | Offset</td><td>simple, cheap; conflict misses when two hot blocks share a line; no replacement choice</td></tr>
+<tr><td><b>Fully associative</b></td><td><b>any</b> line</td><td>Tag | Offset (no index)</td><td>most flexible; must search every line in parallel → expensive</td></tr>
+<tr><td><b>N-way set associative</b></td><td>any of the N lines of <b>one set</b>: set = block mod (# sets)</td><td>Tag | Set | Offset</td><td>compromise: good hit rate, moderate cost</td></tr>
+</table>
+
+<h3 id="s7-fields">Address fields: Tag | Index (Set) | Offset</h3>
+<div class="row"><div class="col">
+<div class="formula">
+Address bits = log₂(memory size in addressable units)<br/>
+<b>Offset</b> = log₂(block size) — which byte inside the block<br/>
+<b>Index</b> = log₂(# cache lines) — which line (direct mapped)<br/>
+<b>Set</b> = log₂(# sets), # sets = lines ÷ N — which set (N-way)<br/>
+<b>Tag</b> = address bits − index (or set) − offset — which memory block is in the line<br/>
+Fully associative: Tag = address bits − offset
+</div>
+<div class="formula">
+# main-memory blocks = memory size ÷ block size<br/>
+Block number = ⌊address ÷ block size⌋ (drop the offset bits)<br/>
+Line = block mod lines · Set = block mod sets (keep the low bits)<br/>
+Tag value = ⌊block ÷ lines⌋ (the remaining high bits)
+</div>
+</div><div class="col">
+<div class="ex"><p class="et">Worked example <span class="src">quiz Q8, prof's solution</span></p>
+2²⁴ bytes, byte-addressable, direct-mapped, 1024 blocks of 16 bytes.<br/>
+<b>1. Memory blocks</b> = 2²⁴ ÷ 2⁴ = <span class="ans">2²⁰</span><br/>
+<b>2. Format</b>: address = log₂(2²⁴) = 24 bits. Offset = log₂16 = 4. Index = log₂1024 = 10. Tag = 24 − 10 − 4 = 10. → <span class="ans">Tag 10 | Index 10 | Offset 4</span><br/>
+<b>3. Map 0x5A3C8F</b><br/>
+Step 1: binary 0101 1010 0011 1100 1000 1111<br/>
+Step 2: split from the right (10 | 10 | 4): offset <b>1111</b>, index <b>11 1100 1000</b>, tag <b>0101 1010 00</b><br/>
+Step 3: index → decimal 512 + 256 + 128 + 64 + 8 = <span class="ans">968</span><br/>
+<i>Hex shortcut</i>: block = drop the last hex digit = 0x5A3C8; line = low 10 bits = 0x3C8 = 968; tag = 0x5A3C8 ÷ 1024 = 0x168 = 360.</div>
+</div></div>
+<div class="row"><div class="col">
+<div class="ex"><p class="et">Same memory, other mappings</p>
+<b>Fully associative</b>: no index → Tag 20 | Offset 4. 0x5A3C8F → tag 0x5A3C8.<br/>
+<b>4-way set associative</b>: 1024 ÷ 4 = 256 sets → set 8 bits → Tag 12 | Set 8 | Offset 4. 0x5A3C8F → 0x5A3 | 0xC8 | 0xF → <span class="ans">set 200</span>.</div>
+</div><div class="col">
+<div class="ex"><p class="et">Example <span class="src">cheat sheet P8</span></p>
+2¹⁶ bytes, 64-line cache, 8-byte blocks. Blocks = 2¹³. Direct: offset 3, index 6, tag 7. 0xBEEF = 1011111 | 011101 | 111 → line 29, tag 95. 2-way: 32 sets → 8 | 5 | 3 → 10111110 | 11101 | 111 → set 29, tag 190.</div>
+</div></div>
+<div class="trap">⚠ <b>TRAP</b> For a set-associative cache the middle field is log₂(<b>sets</b>), not log₂(lines). Fewer index bits means more tag bits.</div>
+
+<h3 id="s7-trace">Tracing a reference string</h3>
+<div class="method">▣ <b>METHOD</b> For each reference: (1) find its line (direct) or set (set-assoc.), (2) hit if that block is already there, otherwise miss and load it (evicting according to the policy), (3) write the cache contents after each step.</div>
+<p>All three examples use the S6-7 exercise references <b>0, 1, 13, 2, 8, 0, 14, 1</b>.</p>
+<div class="row"><div class="col">
+<div class="ex"><p class="et">Direct mapped, 8 blocks <span class="src">S6-7 exercise 3</span></p>
+<table class="mono">
+<tr><th>Ref</th><th>Line (mod 8)</th><th>H/M</th><th>Note</th></tr>
+<tr><td>0</td><td>0</td><td>M</td><td>load 0</td></tr>
+<tr><td>1</td><td>1</td><td>M</td><td>load 1</td></tr>
+<tr><td>13</td><td>5</td><td>M</td><td>load 13</td></tr>
+<tr><td>2</td><td>2</td><td>M</td><td>load 2</td></tr>
+<tr><td>8</td><td>0</td><td>M</td><td>evicts 0</td></tr>
+<tr><td>0</td><td>0</td><td>M</td><td>evicts 8</td></tr>
+<tr><td>14</td><td>6</td><td>M</td><td>load 14</td></tr>
+<tr><td>1</td><td>1</td><td><b>H</b></td><td>still there</td></tr>
+</table>
+<span class="ans">1 hit, 7 misses</span>. Blocks 0 and 8 fight over line 0 (a conflict miss).</div>
+</div><div class="col">
+<div class="ex"><p class="et">4-way set associative, 8 blocks <span class="src">S6-7 exercise 5</span></p>
+8 ÷ 4 = 2 sets; set = block mod 2. Even blocks → set 0, odd → set 1.<br/>
+<table class="mono">
+<tr><th>Ref</th><th>Set</th><th>H/M</th><th>Set contents after</th></tr>
+<tr><td>0</td><td>0</td><td>M</td><td>{0}</td></tr>
+<tr><td>1</td><td>1</td><td>M</td><td>{1}</td></tr>
+<tr><td>13</td><td>1</td><td>M</td><td>{1, 13}</td></tr>
+<tr><td>2</td><td>0</td><td>M</td><td>{0, 2}</td></tr>
+<tr><td>8</td><td>0</td><td>M</td><td>{0, 2, 8}</td></tr>
+<tr><td>0</td><td>0</td><td><b>H</b></td><td>{0, 2, 8}</td></tr>
+<tr><td>14</td><td>0</td><td>M</td><td>{0, 2, 8, 14}</td></tr>
+<tr><td>1</td><td>1</td><td><b>H</b></td><td>{1, 13}</td></tr>
+</table>
+<span class="ans">2 hits</span>. No set ever fills, so no replacement is needed.</div>
+</div></div>
+<div class="ex"><p class="et">Fully associative, 4 blocks: LRU and FIFO <span class="src">S6-7 exercise 4</span></p>
+<table class="mono">
+<tr><th>Ref</th><th>H/M</th><th>LRU: evict → contents</th><th>FIFO: evict → contents</th></tr>
+<tr><td>0, 1, 13, 2</td><td>M M M M</td><td>fill empty lines → {0, 1, 13, 2}</td><td>fill → {0, 1, 13, 2}</td></tr>
+<tr><td>8</td><td>M</td><td>0 (least recently used) → {8, 1, 13, 2}</td><td>0 (first in) → {8, 1, 13, 2}</td></tr>
+<tr><td>0</td><td>M</td><td>1 → {8, 0, 13, 2}</td><td>1 → {8, 0, 13, 2}</td></tr>
+<tr><td>14</td><td>M</td><td>13 → {8, 0, 14, 2}</td><td>13 → {8, 0, 14, 2}</td></tr>
+<tr><td>1</td><td>M</td><td>2 → {8, 0, 14, 1}</td><td>2 → {8, 0, 14, 1}</td></tr>
+</table>
+Both: <span class="ans">8 misses, 0 hits</span>. They agree because no block is hit while it is in the cache, so the least recently used block is always also the oldest.</div>
+
+<h3 id="s7-repl">Replacement policies</h3>
+<div class="row"><div class="col">
+<p>Needed only when a miss happens and the line/set is full. Direct-mapped caches have <b>no choice</b>: the mapping fixes the line.</p>
+<table>
+<tr><th>Policy</th><th>Evicts</th></tr>
+<tr><td><b>FIFO</b></td><td>the block that was <b>loaded</b> earliest. Hits change nothing.</td></tr>
+<tr><td><b>LRU</b></td><td>the block <b>used</b> least recently. Every hit refreshes the block.</td></tr>
+<tr><td><b>LFU</b></td><td>the block with the fewest uses</td></tr>
+<tr><td><b>Random</b></td><td>a random block</td></tr>
+</table>
+</div><div class="col">
+<div class="ex"><p class="et">Example where LRU and FIFO differ <span class="src">cheat sheet P11b</span></p>
+Fully associative, 2 blocks, refs 1, 2, 1, 3, 1, 2.<br/>
+<b>LRU</b>: 1 M · 2 M · 1 H (1 is now most recent) · 3 M evicts <b>2</b> · 1 H · 2 M → <span class="ans">2 hits</span><br/>
+<b>FIFO</b>: 1 M · 2 M · 1 H (order unchanged: 1 is still oldest) · 3 M evicts <b>1</b> · 1 M · 2 M → <span class="ans">1 hit</span></div>
+</div></div>
+
+<h3 id="s7-write">Write policies</h3>
+<div class="row"><div class="col">
+<table>
+<tr><th></th><th>Write-through</th><th>Write-back</th></tr>
+<tr><td>On a write</td><td>update cache <b>and</b> main memory every time</td><td>update the cache only; set the block's <b>dirty bit</b></td></tr>
+<tr><td>Memory updated</td><td>immediately</td><td>when the dirty block is replaced</td></tr>
+<tr><td>Consistency</td><td>memory always current</td><td>memory temporarily out of date</td></tr>
+<tr><td>Bus traffic</td><td>high</td><td>low</td></tr>
+</table>
+</div><div class="col">
+<div class="ex"><p class="et">Example</p>
+A loop writes to variable X 100 times while X stays cached.<br/>
+Write-through: 100 memory writes.<br/>
+Write-back: 0 memory writes during the loop; 1 write when X's block is finally evicted (its dirty bit is set).</div>
+</div></div>
+
+<div class="check"><p class="ct">Check yourself</p>
+1. 2²⁰-byte memory, direct-mapped, 256 lines of 32 bytes: fields? · 2. Same cache 4-way: fields? · 3. Direct-mapped, 4 lines, refs 0, 4, 8, 0: hits? · 4. Which policy uses a dirty bit? · 5. Loop over an array: which locality?<br/>
+<span class="small">Answers: Tag 7 | Index 8 | Offset 5 · 64 sets → Tag 9 | Set 6 | Offset 5 · 0 (all map to line 0 and keep evicting each other) · write-back · spatial (and temporal for the loop code)</span></div>
+</section>

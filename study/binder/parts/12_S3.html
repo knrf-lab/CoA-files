@@ -1,0 +1,75 @@
+<section class="tab" id="S3" data-short="3 · CPU Basics &amp; Addressing">
+<div class="tabhead">3 · CPU basics, buses, clock, memory addressing <span class="sm">(Sessions 2–3, Null Ch. 4)</span></div>
+<p class="links">Cheat sheet: <span class="cs">T3</span> <span class="cs">T9</span> <span class="cs">C</span> · Used in: P9, P13 and theory questions</p>
+
+<h3 id="s3-cpu">Inside the CPU</h3>
+<div class="row"><div class="col">
+<p>The CPU <b>fetches</b> instructions, <b>decodes</b> them and <b>performs</b> the operations on the right data. It has two parts:</p>
+<ul>
+<li><b>Datapath</b>: the network of registers, the ALU, and the internal buses that move and process data.</li>
+<li><b>Control unit</b>: the "traffic manager / policeman". It fetches and decodes instructions and sends control signals so the right data is in the right place at the right time.</li>
+</ul>
+</div><div class="col">
+<ul>
+<li><b>Registers</b>: the fastest storage, inside the CPU. Some are special-purpose (PC, IR, MAR, MBR), some general-purpose.</li>
+<li><b>ALU</b>: does arithmetic (add, subtract, multiply) and logic (AND, OR, compare). It is part of the CPU and is driven by signals from the control unit (S2-3 exercise 1).</li>
+</ul>
+</div></div>
+
+<h3 id="s3-bus">The bus</h3>
+<div class="row"><div class="col">
+<p>A <b>bus</b> is a shared set of wires connecting subsystems; it moves bits in parallel. A system bus has three kinds of lines:</p>
+<table>
+<tr><th>Lines</th><th>Carry</th></tr>
+<tr><td><b>Data</b></td><td>the actual information being moved</td></tr>
+<tr><td><b>Address</b></td><td>the memory or I/O location being accessed</td></tr>
+<tr><td><b>Control</b></td><td>READ / WRITE, timing, which device may use the bus</td></tr>
+</table>
+</div><div class="col">
+<div class="tip">✔ Link to MARIE: the address lines are fed by MAR, the data lines by MBR. The width of the address bus decides how many locations can be reached: 12 address lines → 2¹² = 4096 = 4K, which is MARIE's memory size.</div>
+</div></div>
+
+<h3 id="s3-clock">The clock</h3>
+<div class="row"><div class="col">
+<div class="formula">
+The clock synchronizes every component. One instruction takes a fixed number of clock cycles.<br/>
+<b>f = 1 / T</b> and <b>T = 1 / f</b> (f = clock rate in Hz, T = cycle time in s)<br/>
+1 GHz = 10⁹ Hz ↔ T = 1 ns · 2 GHz ↔ 0.5 ns · 500 MHz ↔ 2 ns
+</div>
+<p>A faster clock does not guarantee a faster program: the cycle must be long enough for signals to cross the circuits, and the number of cycles per instruction also matters (Tab 6).</p>
+</div><div class="col">
+<div class="ex"><p class="et">Example: clock arithmetic</p>
+A 2.5 GHz CPU: T = 1 ÷ (2.5 × 10⁹) = 0.4 × 10⁻⁹ s = <span class="ans">0.4 ns</span>.<br/>
+An instruction needing 5 cycles takes 5 × 0.4 = <span class="ans">2 ns</span>.<br/>
+A 4.20 GHz CPU: T = 1/4.2 ≈ 0.238 ns.</div>
+</div></div>
+
+<h3 id="s3-addr">Memory organization and address bits</h3>
+<div class="row"><div class="col">
+<p>Memory is a grid of bits: each row (location) has a unique address. A memory written <b>A × B</b> has <b>A locations</b> each <b>B bits</b> wide (e.g. 4M × 16).</p>
+<ul>
+<li><b>Byte-addressable</b>: every byte has its own address (most common today).</li>
+<li><b>Word-addressable</b>: every word has its own address (MARIE).</li>
+</ul>
+<div class="formula">
+<b>Address bits = log₂(number of addressable units)</b> (round up if not a power of 2)<br/>
+Word-addressable: units = number of words (A).<br/>
+Byte-addressable: units = A × (B ÷ 8).<br/>
+The number of bits depends on <b>how many units</b>, not on their size.
+</div>
+</div><div class="col">
+<div class="ex"><p class="et">Example: 2M × 32, word-addressable <span class="src">S2-3 exercise 2</span></p>
+Units = 2M = 2 × 2²⁰ = 2²¹ → <span class="ans">21 bits</span></div>
+<div class="ex"><p class="et">Example: 4M × 16, byte-addressable <span class="src">S6-7 exercise 2</span></p>
+16 bits = 2 bytes per word. Units = 4M × 2 = 8M = 2²³ → <span class="ans">23 bits</span></div>
+<div class="ex"><p class="et">Example: 8M × 32 both ways <span class="src">cheat sheet P9</span></p>
+Word: 8M = 2²³ → <span class="ans">23</span>. Byte: 8M × 4 = 32M = 2²⁵ → <span class="ans">25</span></div>
+<div class="ex"><p class="et">Example: MARIE</p>
+4K × 16, word-addressable: 4K = 2¹² → 12 bits. That is why MARIE's MAR and PC are 12 bits wide.</div>
+</div></div>
+<div class="trap">⚠ <b>TRAP</b> In "4M × 16", the 16 is the word width in <b>bits</b>. Divide by 8 to get bytes per word before multiplying for a byte-addressable memory.</div>
+
+<div class="check"><p class="ct">Check yourself</p>
+1. Which bus lines does MAR drive? · 2. Cycle time of a 400 MHz clock? · 3. Address bits for 64K × 16, word- and byte-addressable? · 4. What decides the address width: number of words or word size?<br/>
+<span class="small">Answers: address lines · 2.5 ns · 16 and 17 (128K) · the number of addressable units</span></div>
+</section>

@@ -1,0 +1,49 @@
+<section class="cover" id="cover" data-short="Cover">
+<h1 class="title">Computer Organization &amp; Architecture<br/>Open-Book Binder</h1>
+<p class="subtitle">Midterm (UTS) · Sessions 1–7 · CPEN6260010 · Dr. Endra · Linda Null, <i>Essentials of Computer Organization and Architecture</i> (2023)</p>
+<p class="subtitle">English, with Indonesian terms in <span class="id">(kurung / brackets)</span> · Companion to your 2-page cheat sheet</p>
+
+<h3>Contents <span class="id">(Daftar isi)</span></h3>
+<table class="toc">
+<tr><th>Tab</th><th>Section</th><th>Cheat sheet</th><th>Page</th></tr>
+<tr><td>G</td><td>Glossary: acronyms, register names, and Indonesian question words. <b>Read this first when a word confuses you.</b></td><td>all</td><td><a class="pg" href="#G"></a></td></tr>
+<tr><td>I</td><td><b>Problem-type index</b>: "the question says X → use method Y → go to page Z"</td><td>all</td><td><a class="pg" href="#I"></a></td></tr>
+<tr><td>C</td><td>Calculation toolkit: powers of 2, base conversion by hand, hex arithmetic, the "drop bits / keep bits" trick</td><td>T1, T9, T10</td><td><a class="pg" href="#C"></a></td></tr>
+<tr><td>1</td><td>Introduction: organization vs architecture, Moore's Law, the level hierarchy, von Neumann</td><td>T3, C</td><td><a class="pg" href="#S1"></a></td></tr>
+<tr><td>2</td><td>Data representation: binary, hex, bytes, two's complement, characters, endianness</td><td>T1, T2, T12</td><td><a class="pg" href="#S2"></a></td></tr>
+<tr><td>3</td><td>CPU basics: datapath, control unit, buses, clock, memory addressing</td><td>T3, T9, C</td><td><a class="pg" href="#S3"></a></td></tr>
+<tr><td>4</td><td>MARIE: registers, instruction set, RTN, fetch–decode–execute, assembling and tracing programs</td><td>T4, T5, T6</td><td><a class="pg" href="#S4"></a></td></tr>
+<tr><td>5</td><td>Instruction set architectures: formats, operands, postfix, expanding opcodes, addressing modes</td><td>T7, T13, T14</td><td><a class="pg" href="#S5"></a></td></tr>
+<tr><td>6</td><td>Performance and pipelining: CPU time, pipeline time, speedup, hazards</td><td>T3, T8</td><td><a class="pg" href="#S6"></a></td></tr>
+<tr><td>7</td><td>Memory and cache: hierarchy, locality, mapping, address fields, tracing, replacement, write policies</td><td>T9, T10, T11</td><td><a class="pg" href="#S7"></a></td></tr>
+<tr><td>8</td><td>Virtual memory and real-world memory systems</td><td>C</td><td><a class="pg" href="#S8"></a></td></tr>
+<tr><td>X</td><td>Traps and errata: mistakes in the slides and common exam traps</td><td>all</td><td><a class="pg" href="#X"></a></td></tr>
+<tr><td>T</td><td>Reference tables: powers of 2, hex/decimal/binary, ASCII, MARIE reference card, formula list</td><td>all</td><td><a class="pg" href="#T"></a></td></tr>
+<tr><td>Q</td><td><b>Practice quiz</b> (new questions, not on the cheat sheet). Do it closed-solutions, open-binder.</td><td>all</td><td><a class="pg" href="#Q"></a></td></tr>
+<tr><td>K</td><td>Practice quiz answer key: full worked solutions</td><td>all</td><td><a class="pg" href="#K"></a></td></tr>
+</table>
+
+<h3>How to use this binder</h3>
+<ol>
+<li><b>Learn in order, 1 → 8.</b> Each tab starts from zero and builds up. Read the theory, then work every <b>Example</b> box with a pencil <i>before</i> reading its solution.</li>
+<li><b>Close each tab with its "Check yourself" box.</b> If you can answer those without looking, you have the tab.</li>
+<li><b>Connect to the cheat sheet.</b> Every tab header lists its cheat-sheet boxes (<span class="cs">T4</span>) and the quiz/practice cards that use it (Q4, P4). After a tab, redo those cards on the cheat sheet. The words on the back of the cheat sheet are summaries of the pages here.</li>
+<li><b>Test yourself with Tab Q</b>, then mark it with Tab K. Every K answer links back to the page with the method.</li>
+<li><b>In the exam</b>: classify the question with Tab I, then use the cheat sheet. Show the formula and the substitution, the way the prof's quiz solutions do.</li>
+</ol>
+<div class="tip">✔ Every number in the examples and the answer key was recomputed by computer. The MARIE programs were run in a small MARIE simulator and every cache trace was replayed. Where a slide has a mistake, the corrected fact is used and the slip is listed in Tab X.</div>
+<p class="small">Sources: the lecture decks S1 Introduction, S2–S3 MARIE, S4–S5 Instruction Set Architectures, S6–S7 Memory (Dr. Endra, based on Null 2023), the prof's UTS Study Guide, the quiz and the prof's quiz solutions.</p>
+
+<h3>Cheat sheet ↔ binder map</h3>
+<table>
+<tr><th>Cheat-sheet box</th><th>Topic</th><th>Learn it on</th><th>Box</th><th>Topic</th><th>Learn it on</th></tr>
+<tr><td><span class="cs">T1</span></td><td>Hex ↔ binary, bytes</td><td><a class="pg" href="#s2-hex"></a></td><td><span class="cs">T8</span></td><td>Pipelining</td><td><a class="pg" href="#s6-pipe"></a></td></tr>
+<tr><td><span class="cs">T2</span></td><td>Two's complement</td><td><a class="pg" href="#s2-tc"></a></td><td><span class="cs">T9</span></td><td>Address bits</td><td><a class="pg" href="#s3-addr"></a></td></tr>
+<tr><td><span class="cs">T3</span></td><td>Moore's Law, CPU time</td><td><a class="pg" href="#s1-moore"></a>, <a class="pg" href="#s6-cpu"></a></td><td><span class="cs">T10</span></td><td>Cache address fields</td><td><a class="pg" href="#s7-fields"></a></td></tr>
+<tr><td><span class="cs">T4</span></td><td>MARIE format, opcodes</td><td><a class="pg" href="#s4-isa"></a></td><td><span class="cs">T11</span></td><td>Cache tracing, policies</td><td><a class="pg" href="#s7-trace"></a></td></tr>
+<tr><td><span class="cs">T5</span></td><td>Fetch–decode–execute</td><td><a class="pg" href="#s4-fde"></a></td><td><span class="cs">T12</span></td><td>Endianness</td><td><a class="pg" href="#s2-endian"></a></td></tr>
+<tr><td><span class="cs">T6</span></td><td>Assembling MARIE</td><td><a class="pg" href="#s4-asm"></a></td><td><span class="cs">T13</span></td><td>Addressing modes</td><td><a class="pg" href="#s5-modes"></a></td></tr>
+<tr><td><span class="cs">T7</span></td><td>Expanding opcodes</td><td><a class="pg" href="#s5-expand"></a></td><td><span class="cs">T14</span></td><td>Formats, postfix</td><td><a class="pg" href="#s5-ops"></a></td></tr>
+<tr><td><span class="cs">C</span></td><td colspan="5">Concepts for short-answer questions: <a class="pg" href="#S1"></a> (intro), <a class="pg" href="#S3"></a> (CPU, bus), <a class="pg" href="#s4-ctrl"></a> (control units, CISC/RISC), <a class="pg" href="#S7"></a> (memory), <a class="pg" href="#S8"></a> (virtual memory)</td></tr>
+</table>
+</section>
